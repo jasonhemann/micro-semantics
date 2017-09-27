@@ -1,0 +1,146 @@
+\documentclass[11pt,twoside]{article}
+\usepackage[inner=2cm,outer=2cm,top=3cm,bottom=3cm]{geometry} %% for changing page layout
+%% add ,showframe to geometry for debugging spacing
+\usepackage{graphbox} %% an extension of graphix, for \includegraphics . Possibly consider adjustbox
+\usepackage{hyphenat} %% electromagnetic\hyp{}endioscopy
+\usepackage[shortcuts]{extdash}
+\usepackage{textcomp} %% for \oldstlyenums{}
+\usepackage[activate={true,nocompatibility},%
+  final,%
+  tracking=true,%
+  kerning=true,%
+  spacing=true,%
+  factor=1100,%
+  stretch=10,%
+  shrink=10]{microtype}%% provides tighter text formatting 
+\usepackage{termcal} %% package for printing a term calendar
+%% \usepackage{alltt} %% Commented in favor of fancyvrb
+%% \renewcommand{\ttdefault}{txtt} %% Commented in favor of fancyvrb
+\usepackage{fancyvrb} %% provides \Verbatim mode, better verbatim commands
+%% all for chapter heading changes: fncychap, quotchap and titlesec. Quotchap doesn't seem to work with this
+%% \usepackage{quotchap} %% For snazzy quotes at top of chapters.
+\usepackage{mathrsfs} %% fraktur fonts
+\usepackage{calrsfs}  %% also fraktur kinda fonts
+\usepackage{mathalfa} %% for math alphabets
+\usepackage{stmaryrd}  %% for additional symbols
+\usepackage{moreverb}
+%% ^^ These are the best we can do without xetex and real unicode symbols in verbatim
+\usepackage{subfiles} %% a nice alternative to \include 
+\usepackage[small]{titlesec} %% change subtitles, etc to smaller size
+\usepackage{fancyhdr} %% improved header styling
+\usepackage{lastpage} %% page n of m in footer
+\usepackage[usenames,dvipsnames,svgnames,table,x11names]{xcolor} %% adds lots of colors
+\usepackage[utf8]{inputenc} %% special symbols
+\usepackage[T1]{fontenc} %% resolves issues with OT1 font and accent characters
+%% Resolves them only for pdflatex. Incompatible with xelatex.
+%% The alternate would be with \fontspec; and add \defaultfontfeatures{Ligatures=TeX} for ---
+\usepackage[american]{babel} %% for language-ing things in pdflatex, for xelatex use polyglossia
+\usepackage{mathtools} %% loads amsmath, which needs to be before hyperref
+\usepackage{latexsym,amsfonts,amssymb,txfonts,pxfonts,wasysym} %% additional symbols 
+\usepackage[normalem]{ulem} %% \uline{...}, \uwave{...},
+\usepackage[ampersand]{easylist} %% alternate, simpler format for listing items.
+\usepackage{bold-extra} %% \textsc{ \textbf{This is bold small capitals} }
+\usepackage{booktabs} %% pretty table formatting
+\usepackage{tabu} %% the currently-preferred table package
+\usepackage{pdflscape} %% for \begin{landscape} ..., to change part of doc to landscape
+\usepackage{multicol} %% provides multicol environment
+\usepackage{morefloats} %% raise limit for max # floats above 18
+\usepackage[section]{placeins} %% gives \FloatBarrier, which limits float movements
+\usepackage{needspace} %% prevents page breaks right after section names
+\usepackage{wrapfig} %% adds \begin{wrapfigure}[lh]{pos}[ohang]{w}
+\usepackage{caption} %% for adding \caption, or table legends via \caption*
+\usepackage{floatrow} %% improved version of sidecap, for horizontal caption placement
+\usepackage{subcaption} %% allows subcaptions before captions 
+\usepackage{footmisc} %% for customizing footnotes
+\usepackage{varioref} %% adds \vref, w/context sensitivity referencing
+\usepackage[pdfauthor={Jason Hemann},pdftitle={C-311 Syllabus},%
+  pagebackref=false,hidelinks,breaklinks,pdftex]{hyperref}
+%% \usepackage[xspace]{ellipsis} %% http://tex.stackexchange.com/questions/73467/what-is-best-method-to-insert-an-ellipsis-in-a-xetex-document#73469 ... add it after hyperref
+\usepackage[all]{hypcap} %% resolves issues w/captions & hyperref. Load after hyperref
+\usepackage{cleveref} %% adds \crefrange{}{} and \cpagerefrange{}
+\usepackage{nag} %% should complain about old and outdated commands
+\usepackage[skipabove={\baselineskip plus 5pt minus 1.5pt}, %% changes skips https://tex.stackexchange.com/questions/39867/intextsep-gives-doubled-space#40363
+  skipbelow={\baselineskip plus 5pt minus 1.5pt},]{mdframed} %% adds \begin{framed} environment, and other simple framing boxes
+\usepackage{fancybox} %% adds \doublebox, \ovalbox, and \shadowbox
+\usepackage{minted} %% My brand new baby for highlighting source code 
+\usepackage{mathpartir} %% Didier Remy's typesetting for proofs. 
+%% \usepackage[nottoc]{tocbibind} adds bibliography to TOC. Commented for now.
+\usepackage[numbers]{natbib} %% [round, ] turning off these options, default back to standard 
+%% \renewcommand{\bibsection}{} %% Removes 'References' section and section break
+\usepackage{etoolbox}% http://ctan.org/pkg/etoolbox
+%% \AtBeginEnvironment{easylist}{\addvspace{.5cm}}\AtEndEnvironment{easylist}{\addvspace{.5cm}}
+%% \AtBeginEnvironment{tabu}{\addvspace{.5cm}}\AtEndEnvironment{tabu}{\addvspace{.5cm}}
+%% \usepackage{lmodern}
+%% \usepackage{beramono} %% [scaled=0.85]
+\usepackage{luximono} %% [scaled=0.85]
+%% \usepackage{literat}
+%% \renewcommand{\familydefault}{\ttdefault}
+\input{defs.tex}
+\setlength{\headheight}{13.6pt} %% must be >= 13.6pt
+
+\defcitealias{friedman2008essentials}{\textbf{EOPL}}	
+\defcitealias{springer1989scheme}{\textbf{SAOP}}
+
+
+%% \pagestyle{fancyplain} %% from fancyhdr
+%% \fancyhf{}
+%% \lhead{\fancyplain{}{C311 - Principles of Programming Languages}}
+%% \rhead{\fancyplain{}{\today}}
+%% \fancyfoot[RO, LE] {page \thepage\ of \pageref{LastPage} }
+%% \thispagestyle{plain}
+
+%% texdef -t latex -c article -v parskip
+%% \setlength{\parskip}{11pt plus 5pt minus 3pt} %% flex paragraph skipping for spacing
+
+\numberwithin{equation}{subsection} %% turn on equation numbering at subsection level
+
+\frenchspacing %% eliminates double spacing after period.  It's outdated. 
+
+\VerbatimFootnotes % Required, otherwise verbatim does not work in footnotes!
+
+\overfullrule=2cm %% for highlighting overfull boxes
+
+\begin{document}
+
+I think this is a grammar. As a simplifying assumption, we program
+with only unary relations. This will slightly simplify the language
+without loss of generality. Const, Vars, and Relnames are mutually
+disjoint sets. I'm leaving out \texttt{()}, and strings and numbers
+and whatnot because those additional constants shouldn't matter for
+the term language. And the term language itself shouldn't really
+matter for the semantics of the expression language. I was hoping I
+could use $\ldots$ to denote 0 or more relations. I'm planning to cite
+the standard language about parenthetic conventions. I'm intending the
+$\relcallexp{x}{g}$ form to mean relation invocation, and the
+$\freshvariableexp{x}{g}$ form to mean scoping a local fresh variable. \\
+
+\noindent Can you see what I'm trying to say? Does it say right? Other thoughts? 
+
+\vspace{.5cm}
+
+\begin{tabu} {r c r c l}
+\toprule
+\multicolumn{5}{c}{Term Language} \\
+\midrule
+  Const    & $\ni$ & $c$ & & \\ 
+  Vars     & $\ni$ & $x$ & & \\
+  Term     & $\ni$ & $t, t_{1}$ & := & $ c \alt  x \alt \consexp{t}{t_{1}}$ \\ 
+\\ 
+\toprule
+\multicolumn{5}{c}{Expression Language} \\
+\midrule
+  Relnames & $\ni$ & $n$        &    &  \\
+  Program  & $\ni$ & $p$        & := & $r~\ldots~g $ \\
+  Relation & $\ni$ & $r$        & := & $\defrelexp{n}{x}{g}$ \\
+  Goal     & $\ni$ & $g, g_{1}$  & := & $\succeedv \alt \failv \alt \syntequalexp{t}{t_{1}} \alt \disjunctionexp{g}{g_{1}}$ \\
+           &       &            &    & $\alt \conjunctionexp{g}{g_{1}} \alt \relcallexp{x}{g} \alt \freshvariableexp{x}{g}$ \\
+\bottomrule
+\end{tabu}  
+
+\vspace{.5cm}
+
+So I don't have to modify my Makefile, I'm citing this~\cite{friedman2008essentials}. 
+
+\bibliographystyle{plain}
+\bibliography{semantics}
+\end{document}
