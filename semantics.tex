@@ -14,9 +14,6 @@
   stretch=10,%
   shrink=10]{microtype}%% provides tighter text formatting 
 \usepackage{termcal} %% package for printing a term calendar
-%% \usepackage{alltt} %% Commented in favor of fancyvrb
-%% \renewcommand{\ttdefault}{txtt} %% Commented in favor of fancyvrb
-\usepackage{fancyvrb} %% provides \Verbatim mode, better verbatim commands
 %% all for chapter heading changes: fncychap, quotchap and titlesec. Quotchap doesn't seem to work with this
 %% \usepackage{quotchap} %% For snazzy quotes at top of chapters.
 \usepackage{mathrsfs} %% fraktur fonts
@@ -30,11 +27,14 @@
 \usepackage{fancyhdr} %% improved header styling
 \usepackage{lastpage} %% page n of m in footer
 \usepackage[usenames,dvipsnames,svgnames,table,x11names]{xcolor} %% adds lots of colors
+%% Resolves them only for pdflatex. Incompatible with xelatex.
 \usepackage[utf8]{inputenc} %% special symbols
 \usepackage[T1]{fontenc} %% resolves issues with OT1 font and accent characters
-%% Resolves them only for pdflatex. Incompatible with xelatex.
 %% The alternate would be with \fontspec; and add \defaultfontfeatures{Ligatures=TeX} for ---
+%% \usepackage{fontspec}
+%% \defaultfontfeatures{Ligatures=TeX}
 \usepackage[american]{babel} %% for language-ing things in pdflatex, for xelatex use polyglossia
+%% \usepackage{polyglossia}
 \usepackage{mathtools} %% loads amsmath, which needs to be before hyperref
 \usepackage{latexsym,amsfonts,amssymb,txfonts,pxfonts,wasysym} %% additional symbols 
 \usepackage[normalem]{ulem} %% \uline{...}, \uwave{...},
@@ -63,16 +63,26 @@
   skipbelow={\baselineskip plus 5pt minus 1.5pt},]{mdframed} %% adds \begin{framed} environment, and other simple framing boxes
 \usepackage{fancybox} %% adds \doublebox, \ovalbox, and \shadowbox
 \usepackage{minted} %% My brand new baby for highlighting source code 
+%% \usepackage{alltt} %% Commented in favor of fancyvrb
+%% \renewcommand{\ttdefault}{txtt} %% Commented in favor of fancyvrb
+\usepackage{fancyvrb} %% provides \Verbatim mode, better verbatim commands
 \usepackage{mathpartir} %% Didier Remy's typesetting for proofs. 
 %% \usepackage[nottoc]{tocbibind} adds bibliography to TOC. Commented for now.
 \usepackage[numbers]{natbib} %% [round, ] turning off these options, default back to standard 
 %% \renewcommand{\bibsection}{} %% Removes 'References' section and section break
-\usepackage{etoolbox}% http://ctan.org/pkg/etoolbox
+\usepackage{etoolbox}% http://ctan.org/pkg/etoolbox . An ifthen package replacement. 
 %% \AtBeginEnvironment{easylist}{\addvspace{.5cm}}\AtEndEnvironment{easylist}{\addvspace{.5cm}}
 %% \AtBeginEnvironment{tabu}{\addvspace{.5cm}}\AtEndEnvironment{tabu}{\addvspace{.5cm}}
+%% For xelatex unicode support. 
+%% \setmainfont{Junicode}
+%% \newfontfamily\myregularfont{Junicode}
+%% \newfontfamily\mychinesefont{IPAexMincho}
+ 
+%% \usepackage[CJK]{ucharclasses}
+%% \setTransitionsForCJK{\mychinesefont}{\myregularfont}
 %% \usepackage{lmodern}
 %% \usepackage{beramono} %% [scaled=0.85]
-\usepackage{luximono} %% [scaled=0.85]
+%% \usepackage{luximono} %% [scaled=0.85]
 %% \usepackage{literat}
 %% \renewcommand{\familydefault}{\ttdefault}
 \input{defs.tex}
@@ -90,7 +100,7 @@
 %% \thispagestyle{plain}
 
 %% texdef -t latex -c article -v parskip
-%% \setlength{\parskip}{11pt plus 5pt minus 3pt} %% flex paragraph skipping for spacing
+\setlength{\parskip}{11pt plus 5pt minus 3pt} %% flex paragraph skipping for spacing
 
 \numberwithin{equation}{subsection} %% turn on equation numbering at subsection level
 
@@ -102,44 +112,267 @@
 
 \begin{document}
 
-I think this is a grammar. As a simplifying assumption, we program
-with only unary relations. This will slightly simplify the language
-without loss of generality. Const, Vars, and Relnames are mutually
-disjoint sets. I'm leaving out \texttt{()}, and strings and numbers
-and whatnot because those additional constants shouldn't matter for
-the term language. And the term language itself shouldn't really
-matter for the semantics of the expression language. I was hoping I
-could use $\ldots$ to denote 0 or more relations. I'm planning to cite
-the standard language about parenthetic conventions. I'm intending the
-$\relcallexp{x}{g}$ form to mean relation invocation, and the
-$\freshvariableexp{x}{g}$ form to mean scoping a local fresh variable. \\
+\section{Grammar}
 
-\noindent Can you see what I'm trying to say? Does it say right? Other thoughts? 
+As a simplifying assumption, we allow unary relations. This will
+slightly simplify the language without loss of generality. Const,
+Vars, and Relnames are mutually disjoint sets. Additional constants
+shouldn't matter for the term language. And the term language itself
+shouldn't really matter for the semantics of the expression
+language. The standard parenthetic conventions apply. I'm now
+intending the $\relcallexp{n}{t}$ form to mean relation invocation,
+and the $\freshvariableexp{x}{g}$ form to mean scoping a local fresh
+variable, as you did. I left the $\ni$ parts because a) it's easier to
+remove than to add and 2) I was cargo-culting (from memory,
+incorrectly) something Clinger did in an old
+paper~\cite{clinger1984scheme}, which I include as a secondary
+attachment. If this is not relevant because, say, syntactic domains
+are only relevant when doing denotational semantics, then yeah
+scrap'em. \\
+
+\[
+\begin{tabu}{r c r l l l}
+\toprule
+\multicolumn{5}{c}{\text{Term Language}}                                                                       \\
+\midrule
+  Const           & \ni & c           &          &                              &                              \\ 
+  Vars            & \ni & x           &          &                              &                              \\
+                  &     &             &          &                              &                              \\
+  Term            & \ni & t, \tprimev & \bnfrepl &                              & \text{Terms}                 \\ 
+                  &     &             & \alt     & c                            & \text{Constants}             \\
+                  &     &             & \alt     & x                            & \text{Term Variables}        \\
+                  &     &             & \alt     & \consexp{t}{\tprimev}        & \text{Pairs}                 \\ 
+                  &     &             &          &                              &                              \\
+\toprule
+\multicolumn{5}{c}{\text{Expression Language}}                                                                 \\
+\midrule
+  \text{Relnames} & \ni & r           &          &                              &                              \\
+                  &     &             &          &                              &                              \\
+  \text{Rel env}  & \ni & \relEnv     & \bnfrepl &                              & \text{Relation Environments} \\
+                  &     &             & \alt     & d_{1}, \ldots, d_{n}         &                              \\
+                  &     &             &          &                              &                              \\
+  \text{Program}  & \ni & P           & \bnfrepl &                              &                              \\
+                  &     &             & \alt     & \relEnv\ g                   & \text{Programs}              \\
+                  &     &             &          &                              &                              \\
+  \text{Relation} & \ni & d           & \bnfrepl &                              & \text{Relations}             \\
+                  &     &             & \alt     & \defrelexp{r}{x}{g}          &                              \\
+                  &     &             &          &                              &                              \\
+  \text{Goal}     & \ni & g, \gprimev & \bnfrepl &                              & \text{Goals}                 \\
+                  &     &             & \alt     & \succeedv                    & \text{Trivial success}       \\
+                  &     &             & \alt     & \failv                       & \text{Trivial failure}       \\
+                  &     &             & \alt     & \syntequalexp{t}{\tprimev}   & \text{Syntactic equality}    \\
+                  &     &             & \alt     & \disjunctionexp{g}{\gprimev} & \text{Disjunction}           \\
+                  &     &             & \alt     & \conjunctionexp{g}{\gprimev} & \text{Conjunction}           \\
+                  &     &             & \alt     & \relcallexp{r}{t}            & \text{Relation call}         \\
+                  &     &             & \alt     & \freshvariableexp{x}{g}      & \text{Variable introduction} \\
+\bottomrule
+\end{tabu}
+\]
 
 \vspace{.5cm}
 
-\begin{tabu} {r c r c l}
+\[
+\begin{tabu}{r c r l l l}
 \toprule
-\multicolumn{5}{c}{Term Language} \\
+\multicolumn{5}{c}{\text{Term Language}} \\
 \midrule
-  Const    & $\ni$ & $c$ & & \\ 
-  Vars     & $\ni$ & $x$ & & \\
-  Term     & $\ni$ & $t, t_{1}$ & := & $ c \alt  x \alt \consexp{t}{t_{1}}$ \\ 
-\\ 
-\toprule
-\multicolumn{5}{c}{Expression Language} \\
-\midrule
-  Relnames & $\ni$ & $n$        &    &  \\
-  Program  & $\ni$ & $p$        & := & $r~\ldots~g $ \\
-  Relation & $\ni$ & $r$        & := & $\defrelexp{n}{x}{g}$ \\
-  Goal     & $\ni$ & $g, g_{1}$  & := & $\succeedv \alt \failv \alt \syntequalexp{t}{t_{1}} \alt \disjunctionexp{g}{g_{1}}$ \\
-           &       &            &    & $\alt \conjunctionexp{g}{g_{1}} \alt \relcallexp{x}{g} \alt \freshvariableexp{x}{g}$ \\
+  \text{Const} & \ni & c           &          &                       &                       \\
+  \text{Vars}  & \ni & x           &          &                       &                       \\
+               &     &             &          &                       &                       \\
+  \text{Term}  & \ni & t, \tprimev & \bnfrepl &                       &                       \\
+               &     &             & \alt     & c                     & \text{Constants}      \\
+               &     &             & \alt     & x                     & \text{Term Variables} \\
+               &     &             & \alt     & \consexp{t}{\tprimev} & \text{Pairs}          \\ 
+               &     &             &          &                       &                       \\
 \bottomrule
 \end{tabu}  
+\]
+
+Free variables in the term and expression languages. Relations should
+have no free variables in them. Provided it's correct to be able to
+separate \emph{variables} from \emph{relnames} like I've been doing. I
+did manage to correct an error in relation application as a result of doing this,
+which was good.
+
+
+\[
+\begin{tabu}{l c l}
+\toprule
+\freevarsf{c}                            & = & \emptyset                                            \\
+\freevarsf{\succeedv}                    & = & \emptyset                                            \\
+\freevarsf{\failv}                       & = & \emptyset                                            \\  
+\freevarsf{x}                            & = & \{x\}                                                \\
+\freevarsf{\relcallexp{n}{t}}            & = & \freevarsf{t}                                        \\ 
+\freevarsf{\consexp{t}{\tprimev}}        & = & \freevarsf{t} \cup \freevarsf{\tprimev}              \\
+\freevarsf{\syntequalexp{t}{\tprimev}}   & = & \freevarsf{t} \cup \freevarsf{\tprimev}              \\
+\freevarsf{\disjunctionexp{g}{\gprimev}} & = & \freevarsf{g} \cup \freevarsf{\gprimev}              \\
+\freevarsf{\conjunctionexp{g}{\gprimev}} & = & \freevarsf{g} \cup \freevarsf{\gprimev}              \\
+\freevarsf{\freshvariableexp{x}{g}}      & = & \freevarsf{g} \setminus \{x\}                        \\
+\freevarsf{\defrelexp{n}{x}{g}}          & = & \freevarsf{g} \setminus \{x\}                        \\
+\freevarsf{\relEnv}                      & = & \freevarsf{d_{1}} \cup \ldots \cup \freevarsf{d_{n}} \\
+\freevarsf{P}                            & = & \freevarsf{\relEnv} \cup \freevarsf{g}               \\
+\bottomrule
+\end{tabu}
+\]
+
+\noindent Bound variables, defined similarly. 
+
+\[
+\begin{tabu}{l c l}
+\toprule
+\boundvarsf{c}                            & =                    & \emptyset                                                 \\
+\boundvarsf{\succeedv}                    & =                    & \emptyset                                                 \\
+\boundvarsf{\failv}                       & =                    & \emptyset                                                 \\  
+\boundvarsf{x}                            & =                    & \emptyset                                                 \\
+\boundvarsf{\relcallexp{n}{t}}            & =                    & \boundvarsf{t}                                            \\ 
+\boundvarsf{\consexp{t}{\tprimev}}        & =                    & \boundvarsf{t} \cup \boundvarsf{\tprimev}                 \\
+\boundvarsf{\syntequalexp{t}{\tprimev}}   & =                    & \boundvarsf{t} \cup \boundvarsf{\tprimev}                 \\
+\boundvarsf{\disjunctionexp{g}{\gprimev}} & =                    & \boundvarsf{g} \cup \boundvarsf{\gprimev}                 \\
+\boundvarsf{\conjunctionexp{g}{\gprimev}} & =                    & \boundvarsf{g} \cup \boundvarsf{\gprimev}                 \\
+\boundvarsf{\freshvariableexp{x}{g}}      & =                    & \boundvarsf{g} \cup \{x\}\ \text{if}\ x \in \freevarsf{g} \\
+                                          & =                    & \boundvarsf{g}\ \text{otherwise}                           \\
+\boundvarsf{\defrelexp{n}{x}{g}}          & =                    & \boundvarsf{g} \cup \{x\}\ \text{if}\ x \in \freevarsf{g} \\
+                                          & =                    & \boundvarsf{g}\ \text{otherwise}                           \\
+\boundvarsf{\relEnv}                      & =                    & \boundvarsf{d_{1}} \cup \ldots \cup \boundvarsf{d_{n}}    \\
+\boundvarsf{P}                            & =                    & \boundvarsf{\relEnv} \cup \boundvarsf{g}                  \\
+\bottomrule
+\end{tabu}
+\] 
+%% \begin{tabu} to .5\textwidth{X[c] X[c]}
+%% \toprule
+%%  \mathcal{FV}  1                       & Column 2                                                                         \\
+%% \midrule
+%%  \freevarsf{\succeedv}                 & \begin{aligned}[t] x & = a                                                       \\ & =b\end{aligned}  \\
+%% \bottomrule
+%% \end{tabu}
+
+
+\section{Monadic Semantics}
+
+Danvy et. al give semantics for a small version of an Icon-like
+language~\cite{danvy2002unifying} in terms of an underlying
+\emph{backtracking monad} (c.f. Hughes~\cite{Hughes1995design}). They
+use this as a branching-off point for relating two different models of
+backtracking: streams, and success \& failure continuations. They
+describe how one could relate these models of backtracking by
+Church-encoding the datatype of the one to yield the other, a
+la~\cite{hughes1986novel}. Because we are agnostic as to the
+particular backtracking monad we use, a definition that works for the
+one should work for the other.
+
+Wand and Vallaincourt extend this work to higher-order
+functions~\cite{wand2004relating}. My thought was I could use this to
+find my interleaving backtracking monad:
+
+\begin{easylist}
+  & Start with an interpreter for microKanren written as cleanly as I know how.
+  & Massage interpreter into using a standard, non-interleaving list monad where possible. 
+  & Use the standard, known isomorphism between list monad and sk/fk monad in order to generate a version using the sk/fk monad.
+  & Coherently introduce delay in datatype, extend list monad to a ``prefixed-stream'' monad.
+  && Verify that the result is still a monad. 
+  & Extend the standard isomporphism to one between a ``prefixed-stream'' monad and a ``success, failure, and delay-continuation''  monad. 
+  & Add interleaving to the latter version, extending it to an ``interleaving success, failure, and delay-continuation'' monad
+  && Verify that the result is still a monad. 
+  & Again extend our isomorphism to derive an ``interleaving prefixed-stream'' monad.
+\end{easylist}  
+
+I've done a bunch of this. Partly it's doing the obvious components. I
+think it makes sense to talk about the meaning of a computation
+w.r.t. a set of equations/a substitution in terms of an underlying
+monad.
+
+\[
+\begin{tabu} {rcll}
+  \compin{\succeedv}{s}                 & = & \unitexp{s}                                               &                                                                         \\
+  \compin{\failv}{s}                    & = & \failexp                                                  &                                                                         \\
+  \compin{\syntequalexp{t}{t^{'}}}{s}   & = & \unitexp{\{\syntequalexp{t}{t^{'}}\} \uplus s}            & \text{where}\ \{\syntequalexp{t}{t^{'}}\} \uplus s\ \text{is unifiable} \\
+  \compin{\syntequalexp{t}{t^{'}}}{s}   & = & \failexp                                                  & \text{otherwise}                                                        \\
+  \compin{\disjunctionexp{g}{g^{'}}}{s} & = & \disjexp{\compin{g}{s}}{\compin{g^{'}}{s}}                &                                                                         \\ 
+  \compin{\conjunctionexp{g}{g^{'}}}{s} & = & \bindexp{\compin{g}{s}}{\lamdefexp{s}{\compin{g^{'}}{s}}} &                                                                         \\
+ \compin{\freshvariableexp{x}{g}}{s}    & = & ???                                                       &                                                                         \\
+  \compin{\defrelexp{n}{x}{g}}{s}       & = & ???                                                       &                                                                         \\ 
+  \compin{\relEnv}{s}                   & = & ???                                                       &                                                                         \\ 
+  \compin{P}{s}                         & = & ???                                                       &                                                                         \\ 
+\end{tabu}
+\]
+
+
+\subsection{Declarative (Logic) Semantics}
+
+\subsection{Reduction Semantics}
+
+%% \noindent
+%% \begin{tabu} to \textwidth{X[c] X[c]}
+%% \toprule
+%% Column 1 & Column 2\\
+%% \midrule
+%% 0 &  \begin{aligned}[t] x &= a \\ &=b\end{aligned}  \\
+%% \bottomrule
+%% \end{tabu}
+
+The meaning of a successful unification should be a set of
+equations. We can see unification as a process for solving sets of
+simultaneous equations. This model generalizes nicely for to symbolic
+constraints beyond equality. But for this simple restricted case, the
+result should be a set of equations. This doesn't guarantee efficiency
+or anything, but it's fine as a first step. I don't know which
+restrictions should be put on this set. Should I require that it an
+equivalent set that represents an mgu? Or an idempotent mgu? Should I
+require this set of equations be in solved form? I went the
+computationally more expensive way; it ought to be optimizable from
+here.
+
+
+
+
+
+\begin{minted}{racket}
+(define ((mdelay c) dk sk fk)
+  (lambda (f) 
+    (dk c)))
+
+(define ((unit s) dk sk fk)
+  (lambda (f) 
+    (sk s fk)))
+
+(define ((fail) dk sk fk)
+  (lambda (f)
+    (fk)))
+
+(define ((disj c c2) dk sk fk)
+  (lambda (f)
+    (c (lambda (c) (dk (disj c2 c)))
+       sk
+       (lambda () (c2 dk sk fk)))))
+
+(define ((bind c g) dk sk fk)
+  (c (lambda (c) (dk (bind c g)))
+     (lambda (s fk) ((g s) dk sk fk))
+     fk))
+\end{minted}
+
+\[
+\begin{tabu}{rcl}
+  bind^{S}       & = & fix\ b.\lambda c f.                                                                                                                              \\
+                 & = & \matchdefexp{c}                                                                                                                                  \\
+                 &   & \matchclauseexp{[]}{[]}                                                                                                                          \\ 
+                 &   & \matchclauseexp{h :: t}{disj (f h) (b t f)}                                                                                                      \\
+                 &   & \matchclauseexp{<promise>}{Delay (b (}                                                                                                           \\  
+  unit^{S}       & = & \lambda a.(\lambda\delta\kappa\theta.\kappa a\theta)                                                                                             \\
+  fail^{S}       & = & \lambda\delta\kappa\theta.\theta()                                                                                                               \\
+  disj^{S}       & = & fix\ d.\lambda c c^{'}.(\lambda\delta\kappa\theta.c(\lambda c.\delta(d c^{'} c))\kappa(\lambda().c^{'}\delta\kappa\theta))                       \\
+  delay^{S}      & = & \lambda a.(\lambda\delta\kappa\theta.\delta a)                                                                                                   \\ 
+                 &   &                                                                                                                                                  \\
+  bind^{\kappa}  & = & fix\ b.\lamdefexp{c f}{(\lamdefexp{\delta\kappa\theta}{c(\lamdefexp{c}{\delta(b c f)})(\lamdefexp{a}{f a\delta\kappa\theta})}\theta)}            \\
+  unit^{\kappa}  & = & \lamdefexp{a}{(\lamdefexp{\delta\kappa\theta}{\kappa a\theta})}                                                                                  \\
+  fail^{\kappa}  & = & \lamdefexp{\delta\kappa\theta}{\theta()}                                                                                                         \\
+  disj^{\kappa}  & = & fix\ d.\lamdefexp{c c^{'}}{(\lamdefexp{\delta\kappa\theta}{c(\lamdefexp{c}{\delta(d c^{'} c)})\kappa(\lamdefexp{()}{c^{'}\delta\kappa\theta})})} \\
+  delay^{\kappa} & = & \lamdefexp{a}{(\lamdefexp{\delta\kappa\theta}{\delta a})}                                                                                        \\ 
+\end{tabu}
+\]
+
 
 \vspace{.5cm}
-
-So I don't have to modify my Makefile, I'm citing this~\cite{friedman2008essentials}. 
 
 \bibliographystyle{plain}
 \bibliography{semantics}

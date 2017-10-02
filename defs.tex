@@ -1,7 +1,7 @@
 %% FILENAME: defs.tex
 %% AUTHOR:   Cameron Swords
 
-\usepackage{amsmath, listings, proof, amssymb, xspace, stmaryrd} %% amsthm
+\usepackage{amsmath, listings, proof, amssymb, xspace, stmaryrd, calrsfs} %% amsthm
 
 %%------------------------------------------------------------------------
 %% DEFINITION HELPERS
@@ -92,40 +92,49 @@
 \newcommand{\notop}        {\mathsf{not}}
 \newcommand{\equalsop}     {\mathsf{=}}
 
-
 \newcommand{\andexp}     [2] {\mathsf{and}\ #1\ #2}
 \newcommand{\orexp}      [2] {\mathsf{or}\ #1\ #2}
 \newcommand{\notexp}     [1] {\mathsf{not}\ #1}
-\newcommand{\consexp}    [2] {\mathsf{cons}\ #1\ #2}
-\newcommand{\conjunctionexp}     [2] {{#1}\ \wedge\ {#2}}
-\newcommand{\disjunctionexp}     [2] {{#1}\ \vee\ {#2}}
-\newcommand{\disjexp}            [2] {\mathsf{disj}\ #1\ #2}
-\newcommand{\conjexp}            [2] {\mathsf{conj}\ #1\ #2}
+\newcommand{\consexp}    [2] {#1\, \mathsf{::}\, #2}
 
 %eval
 %% \newcommand{\evalin}             [2] {\llbracket\ #1\rrbracket_{#2}}
 
 %% fresh
-\newcommand{\freshvariableexp}  [2] {\exists #1\ \rightarrow\ #2}
-
-\newcommand{\relcallexp}        [2] {\mathsf{call}\ #1\ #2}
+\newcommand{\freshvariableexp}  [2] {\exists #1 . #2}
+\newcommand{\relcallexp}        [2] {#1\ #2}
 \newcommand{\syntequalexp}      [2] {#1\ \equiv^{?}\ #2}
+\newcommand{\conjunctionexp}     [2] {{#1}\, \wedge\, {#2}}
+\newcommand{\disjunctionexp}     [2] {{#1}\, \vee\, {#2}}
+\newcommand{\disjexp}            [2] {\mathsf{disj}\, #1\, #2}
+\newcommand{\conjexp}            [2] {\mathsf{conj}\, #1\, #2}
 
 %% values
 \newcommand{\falsev}     {\mathsf{false}}
 \newcommand{\truev}      {\mathsf{true}}
 
-\newcommand{\succeedv}     {\mathsf{succeed}}
-\newcommand{\failv}      {\mathsf{fail}}
+\newcommand{\succeedv}     {\mathsf{\top}}
+\newcommand{\failv}      {\mathsf{\bot}}
+\newcommand{\gprimev}    {g^{'}}
+\newcommand{\tprimev}    {t^{'}}
 
 
+\newcommand{\relEnv}         {\Gamma}
 %% defines
-\newcommand{\defrelop}   {\mathsf{defrel}}
-\newcommand{\defrelexp} [3] {\defrelop\ {#1}\ {#2}\ {#3}}
+%% \newcommand{\defrelop}   {\mathsf{defrel}}
+\newcommand{\defrelexp} [3] {{#1}({#2}).{#3}}
 
 %% monadic
 \newcommand{\unitop}        {\mathsf{unit}}
+\newcommand{\failop}        {\mathsf{fail}}
+\newcommand{\bindop}        {\mathsf{bind}}
+
+\newcommand{\failexp}        {\failop}
 \newcommand{\unitexp}     [1] {\unitop\ #1}
+\newcommand{\bindexp}  [2] {\bindop\ #1\ #2}
+\newcommand{\bindexpa}   [2] {\begin{array}{l}\bindop\ #1.\\\hspace*{.5em}#2\\\end{array}}
+
+
 \newcommand{\matchdefexp}   [1] {\mathsf{case}\ #1\ \mathsf{of}}
 \newcommand{\matchclauseexp}   [2] {\hspace*{.5em}#1\rightarrow#2}
 \newcommand{\justexp}     [1] {\mathsf{Just}\ #1}
@@ -134,3 +143,12 @@
 %% unification
 \newcommand{\unifyexp} [3] {\mathsf{unify}{_{#3}}\ #1\ #2}
 
+
+%%------------------------------------------------------------------------
+%% SYNTAX OPERATIONS MACROS
+%%------------------------------------------------------------------------
+
+\newcommand{\freevarsf}   [1] {\mathscr{FV}(#1)}
+\newcommand{\boundvarsf}   [1] {\mathscr{BV}(#1)}
+
+\newcommand{\bnfrepl}         {\mathsf{::=}}
