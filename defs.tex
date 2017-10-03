@@ -63,6 +63,10 @@
 \newcommand{\lamdefexp}  [2] {\lambda #1.\ #2}
 \newcommand{\lamdefexpa}   [2] {\begin{array}{l}\lambda#1.\\\hspace*{.5em}#2\\\end{array}}
 
+\newcommand{\fixop}       {\text{fix}}
+\newcommand{\fixexp}  [2] {\fixop\ \lamdefexp{#1}{#2}}
+\newcommand{\fixexpa}   [2] {\fixop\ \lamdefexpa{#1}{#2}}
+
 %% let
 \newcommand{\letdefexp}    [3] {\letbind{#1}{#2}\ \letin{#3}}
 \newcommand{\letdefarrexp} [3] {\begin{array}{l}\letbind{#1}{#2}\\\letin{#3})\\\end{array}}
@@ -95,7 +99,7 @@
 \newcommand{\andexp}     [2] {\mathsf{and}\ #1\ #2}
 \newcommand{\orexp}      [2] {\mathsf{or}\ #1\ #2}
 \newcommand{\notexp}     [1] {\mathsf{not}\ #1}
-\newcommand{\consexp}    [2] {#1\, \mathsf{::}\, #2}
+\newcommand{\consexp}    [2] {#1\, ,\, #2}
 
 %eval
 %% \newcommand{\evalin}             [2] {\llbracket\ #1\rrbracket_{#2}}
@@ -117,7 +121,8 @@
 \newcommand{\failv}      {\mathsf{\bot}}
 \newcommand{\gprimev}    {g^{'}}
 \newcommand{\tprimev}    {t^{'}}
-
+\newcommand{\primev}    [1] {#1^{'}}
+\newcommand{\doubleprimev}    [1] {#1^{''}}
 
 \newcommand{\relEnv}         {\Gamma}
 %% defines
@@ -129,14 +134,23 @@
 \newcommand{\failop}        {\mathsf{fail}}
 \newcommand{\bindop}        {\mathsf{bind}}
 
+\newcommand{\listnilv}      {[]}
+\newcommand{\listconsop}    {\mathsf{::}}
+\newcommand{\delayop}       {\mathsf{delay}}
+\newcommand{\forceop}       {\mathsf{force}}
+
+\newcommand{\listconsexp}    [2] {#1\, \listconsop\, #2}
+\newcommand{\delayexp}       [1] {\delayop\ #1}
+\newcommand{\forceexp}       [1] {\forceop\ #1}
+
 \newcommand{\failexp}        {\failop}
 \newcommand{\unitexp}     [1] {\unitop\ #1}
 \newcommand{\bindexp}  [2] {\bindop\ #1\ #2}
 \newcommand{\bindexpa}   [2] {\begin{array}{l}\bindop\ #1.\\\hspace*{.5em}#2\\\end{array}}
 
-
-\newcommand{\matchdefexp}   [1] {\mathsf{case}\ #1\ \mathsf{of}}
-\newcommand{\matchclauseexp}   [2] {\hspace*{.5em}#1\rightarrow#2}
+\newcommand{\threematchexp}   [7] {\begin{array}{l}\mathsf{case}\ #1\ \mathsf{of} \\\hspace*{.5em}#2\rightarrow#3\\\hspace*{.5em}#4\rightarrow#5\\\hspace*{.5em}#6\rightarrow#7\\\end{array}}
+%% \newcommand{\matchdefexp} [2] {\begin{array}{l}\bindop\ #1.\\\hspace*{.5em}#2\\\end{array}}
+%% \newcommand{\matchclauseexp}   [2] {\hspace*{.5em}#1\rightarrow#2}
 \newcommand{\justexp}     [1] {\mathsf{Just}\ #1}
 \newcommand{\nothingv}        {\mathsf{Nothing}}
 
