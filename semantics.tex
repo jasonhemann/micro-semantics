@@ -238,9 +238,9 @@ equations. We can see unification as a process for solving sets of
 simultaneous equations. This model generalizes nicely to symbolic
 constraints beyond equality. But for this simple restricted case, the
 result should be a set of equations. This doesn't guarantee efficiency
-or anything, but it's fine as a first step. I don't know which
-restrictions should be put on this set. Should I require that it be an
-equivalent set that represents an \emph{mgu}? Or an idempotent mgu?
+or anything, but it's fine as a first step. I don't know what
+restrictions I should place on this set. Should I require that it be
+an equivalent set that represents an \emph{mgu}? Or an idempotent mgu?
 Should I require this set of equations be in solved form? I went the
 computationally more expensive way; it ought to be optimizable from
 here. I think it makes sense to talk about the meaning of a
@@ -251,18 +251,31 @@ underlying monad.
 
 \[
 \begin{tabu} {rcll}
-  \compin{\succeedv}{\sigma}                      & = & \unitexp{\sigma}                                                              &                                                                                   \\
-  \compin{\failv}{\sigma}                         & = & \failexp                                                                      &                                                                                   \\
-  \compin{\syntequalexp{t}{\primev{t}}}{\sigma}   & = & \unitexp{\{\syntequalexp{t}{\primev{t}}\} \uplus \sigma}                      & \text{where}\ \{\syntequalexp{t}{\primev{t}}\} \uplus \sigma\ \text{is unifiable} \\
-  \compin{\syntequalexp{t}{\primev{t}}}{\sigma}   & = & \failexp                                                                      & \text{otherwise}                                                                  \\
-  \compin{\disjunctionexp{g}{\primev{g}}}{\sigma} & = & \disjexp{\compin{g}{\sigma}}{\compin{\primev{g}}{\sigma}}                     &                                                                                   \\ 
-  \compin{\conjunctionexp{g}{\primev{g}}}{\sigma} & = & \bindexp{\compin{g}{\sigma}}{\lamdefexp{\sigma}{\compin{\primev{g}}{\sigma}}} &                                                                                   \\
- \compin{\freshvariableexp{x}{g}}{\sigma}         & = & ???                                                                           &                                                                                   \\
-  \compin{\defrelexp{n}{x}{g}}{\sigma}            & = & ???                                                                           &                                                                                   \\ 
-  \compin{\relEnv}{\sigma}                        & = & ???                                                                           &                                                                                   \\ 
-  \compin{P}{\sigma}                              & = & ???                                                                           &                                                                                   \\ 
+  
+  \compin{\succeedv}{\sigma}                      & = & \unitexp{\sigma}                                         &                                                                                   \\
+  \compin{\failv}{\sigma}                         & = & \failexp                                                 &                                                                                   \\
+  \compin{\syntequalexp{t}{\primev{t}}}{\sigma}   & = & \unitexp{\{\syntequalexp{t}{\primev{t}}\} \uplus \sigma} & \text{where}\ \{\syntequalexp{t}{\primev{t}}\} \uplus \sigma\ \text{is unifiable} \\
+  \compin{\syntequalexp{t}{\primev{t}}}{\sigma}   & = & \failexp                                                 & \text{otherwise}                                                                  \\
+ %%  \compin{\disjunctionexp{g}{\primev{g}}}{\sigma} & = & ???                                                      &                                                                                   \\ 
+ %%  \compin{\conjunctionexp{g}{\primev{g}}}{\sigma} & = & ???                                                      &                                                                                   \\
+ %% \compin{\freshvariableexp{x}{g}}{\sigma}         & = & ???                                                      &                                                                                   \\
+ %%  \compin{\defrelexp{n}{x}{g}}{\sigma}            & = & ???                                                      &                                                                                   \\ 
+ %%  \compin{\relEnv}{\sigma}                        & = & ???                                                      &                                                                                   \\ 
+ %%  \compin{P}{\sigma}                              & = & ???                                                      &                                                                                   \\ 
 \end{tabu}
 \]
+
+ %%  \compin{\disjunctionexp{g}{\primev{g}}}{\sigma} & = & \disjexp{\compin{g}{\sigma}}{\compin{\primev{g}}{\sigma}}                     &                                                                                   \\ 
+ %%  \compin{\conjunctionexp{g}{\primev{g}}}{\sigma} & = & \bindexp{\compin{g}{\sigma}}{\lamdefexp{\sigma}{\compin{\primev{g}}{\sigma}}} &                                                                                   \\
+ %% \compin{\freshvariableexp{x}{g}}{\sigma}         & = & ???                                                                           &                                                                                   \\
+ %%  \compin{\defrelexp{n}{x}{g}}{\sigma}            & = & ???                                                                           &                                                                                   \\ 
+ %%  \compin{\relEnv}{\sigma}                        & = & ???                                                                           &                                                                                   \\ 
+ %%  \compin{P}{\sigma}                              & = & ???                                                                           &                                                                                   \\ 
+
+
+                    
+   
+
 
 \section{Monadic Semantics}
 
@@ -274,10 +287,10 @@ backtracking: streams, and success \& failure continuations. They
 describe how one could relate these models of backtracking by
 Church-encoding the datatype of the one to yield the other, a
 la~\cite{hughes1986novel}. Because we are agnostic as to the
-particular backtracking monad we use, a definition that works for the
-one should work for the other. Wand and Vallaincourt extend this work
-to higher-order functions~\cite{wand2004relating}. My thought was I
-could use this to find my interleaving backtracking monad:
+particular backtracking monad we use, a definition correct for the one
+should be correct for the other. Wand and Vallaincourt extend this
+research to higher-order functions~\cite{wand2004relating}. My thought
+was I could use this to find my interleaving backtracking monad:
 
 \vspace{.5cm}
 
@@ -295,24 +308,40 @@ could use this to find my interleaving backtracking monad:
 
 \vspace{.5cm}
 
-\noindent I've done a bunch of this. Partly it's doing the obvious components.
+\noindent I've done a bunch of this. Partly it's doing the obvious
+components. Forget about the state for the moment. Suppose we just
+ignore unification, and are instead interested in the control and
+control flow.
 
 \vspace{.5cm}
 
 
-\[
-\begin{tabu}{rcl}
-  bind^{\kappa}  & : & \\
-  unit^{\kappa}  & : & a \rightarrow \uline{?} \rightarrow \\
-  fail^{\kappa}  & : & \\
-  disj^{\kappa}  & : & \\
-  delay^{\kappa} & : & \\
-\end{tabu}
-\]
+%% \[
+%% \begin{tabu}{rcl}
+%%   bind^{\kappa}  & : & \\
+%%   unit^{\kappa}  & : & a \rightarrow \uline{} \rightarrow \\
+%%   fail^{\kappa}  & : & \\
+%%   disj^{\kappa}  & : & \\
+%%   delay^{\kappa} & : & \\
+%% \end{tabu}
+%% \]
 
 \[
 \begin{tabu}{rcl}
-append           & = & \fixexp{a}{\lamdefexpa{s \primev{s}}{\threematchexp{s}%
+\compin{\cdot}{M}                         & : & \mathsf{Exp} \rightarrow M ()                                   \\
+\compin{\succeedv}{M}                     & = & \unitexp{()}                                                    \\
+\compin{\failv}{M}                        & = & \failop                                                         \\
+\compin{\disjunctionexp{g}{\gprimev}}{M}  & = & \disjexp{\compin{g}{M}}{\compin{\gprimev}{M}}                   \\
+\compin{\conjunctionexp{g}{\gprimev}}{M}  & = & \bindexp{\compin{g}{M}}{\lamdefexp{\_}{\compin{\primev{g}}{M}}} \\
+\compin{\relcallexp{r}{\_}}{M}            & = & \delayexp{\compin{\relEnv(r)}{M}}                               \\
+%% \compin{\freshvariableexp{x}{g}}{M}    & = & ???                                                             \\
+%% \compin{\syntequalexp{t}{\tprimev}}{M} & = & ???                                                             \\
+\end{tabu}
+\]
+  
+\[
+\begin{tabu}{rcl}
+append       & = & \fixexp{a}{\lamdefexpa{s \primev{s}}{\threematchexp{s}%
                                                       {\listnilv}{\primev{s}}%
                                                       {\listconsexp{\sigma}{\doubleprimev{s}}}{\listconsexp{\sigma}{(a\ {\doubleprimev{s}} \primev{s})}}%
                                                       {\delayexp{c}}{\delayexp{(a\ \primev{s} c)}}}}                                                                                    \\
@@ -340,32 +369,142 @@ mappend          & = & \fixexp{m}{\lamdefexpa{s g}{\threematchexp{s}%
 
 \begin{minted}{racket}
 (define ((mdelay c) dk sk fk)
-  (lambda (f) 
-    (dk c)))
+  (dk c))
 
 (define ((unit s) dk sk fk)
-  (lambda (f) 
-    (sk s fk)))
+  (sk s fk))
 
 (define ((fail) dk sk fk)
-  (lambda (f)
-    (fk)))
+  (fk))
 
 (define ((disj c c2) dk sk fk)
-  (lambda (f)
-    (c (lambda (c) (dk (disj c2 c)))
-       sk
-       (lambda () (c2 dk sk fk)))))
+  (c (lambda (c) (dk (disj c2 c)))
+     sk
+     (lambda () (c2 dk sk fk))))
 
-(define ((bind c g) dk sk fk)
-  (c (lambda (c) (dk (bind c g)))
-     (lambda (s fk) ((g s) dk sk fk))
+(define ((bind c f) dk sk fk)
+  (c (lambda (c) (dk (bind c f)))
+     (lambda (s fk) ((f s) dk sk fk))
      fk))
 \end{minted}
 
 \subsection{Reduction Semantics}
 
-\subsection{Declarative (Logic) Semantics}
+I don't know that I have a whole lot that I know about this here. I
+think the simplest way to think about it right now is to just
+\emph{show} a rewrite of a program that I'm thinking about. This isn't
+done scientifically, it's to a significant degree art and guesswork
+right now. But that we can combine a conjuction of equations into a
+single equation, that we can lift disjunctions above conjunctions and
+variable quantification, and that a disjunct that is a solution in
+prenex-normal form. I believe that the interleave amounts to flipping
+the subtree on the Y axis. 
+
+\begin{Verbatim}
+(append (x y (x . y)))
+
+(call/fresh e
+ (call/fresh f
+   (call/fresh g 
+     (conj (== (x y (x . y)) (e f g))
+           (disj (conj (== e ())
+                       (== f g))
+                 (call/fresh a
+                   (call/fresh d 
+                     (conj (== (a . d) x)
+                           (call/fresh r
+                             (conj
+                               (== g (a . r))
+                               (append (d f (a . r)))))))))))))
+
+(disj (call/fresh e
+        (call/fresh f
+          (call/fresh g 
+            (conj (== (x y (x . y)) (e f g))
+                  (conj (== e ())
+                        (== f g))))))
+       (call/fresh e
+         (call/fresh f
+           (call/fresh g 
+             (conj (== (x y (x . y)) (e f g))
+                   (call/fresh a
+                     (call/fresh d 
+                       (conj (== (a . d) x)
+                             (call/fresh r
+                               (conj 
+                                 (== g (a . r))
+                                 (append (d f (a . r)))))))))))))
+
+(disj (call/fresh e
+        (call/fresh f
+          (call/fresh g 
+            (conj (== (e . (x y (x . y))) (() . (e f g)))
+                  (== f g)))))
+       (call/fresh e
+         (call/fresh f
+           (call/fresh g 
+             (conj (== (x y (x . y)) (e f g))
+                   (call/fresh a
+                     (call/fresh d 
+                       (conj (== (a . d) x)
+                             (call/fresh r
+                               (conj
+                                 (== g (a . r))
+                                 (append (d f (a . r)))))))))))))
+
+;; At this point, the first disjunct *is* an answer. 
+;; If I were doing a run 1, I'd have to say this tree is in solved form. 
+;; I think what we're after is saying a completed run* is a tree
+;; totally in solved form.
+
+(disj (call/fresh e
+        (call/fresh f
+          (call/fresh g 
+            (== ((e . (x y (x . y))) . f) ((() . (e f g)) . g)))))
+       (call/fresh e
+         (call/fresh f
+           (call/fresh g 
+             (conj (== (x y (x . y)) (e f g))
+                   (call/fresh a
+                     (call/fresh d 
+                       (conj (== (a . d) x)
+                             (call/fresh r
+                               (conj
+                                 (== g (a . r))
+                                 (append (d f (a . r)))))))))))))
+
+(disj (call/fresh e
+        (call/fresh f
+          (call/fresh g 
+            (== ((e . (x y (x . y))) . f) ((() . (e f g)) . g)))))
+       (call/fresh e
+         (call/fresh f
+           (call/fresh g 
+             (call/fresh a
+               (call/fresh d 
+                 (conj (== ((a . d) . (x y (x . y))) (x . (e f g)))
+                       (call/fresh r
+                         (conj
+                           (== g (a . r))
+                           (append (d f (a . r))))))))))))
+
+(disj (call/fresh e
+        (call/fresh f
+          (call/fresh g 
+            (== ((e . (x y (x . y))) . f) ((() . (e f g)) . g)))))
+       (call/fresh e
+         (call/fresh f
+           (call/fresh g 
+             (call/fresh a
+               (call/fresh d 
+                 (call/fresh r
+                   (conj 
+                     (== (g . ((a . d) . (x y (x . y)))) ((a . r) . (x . (e f g))))
+                     (append (d f (a . r)))))))))))
+\end{Verbatim}  
+
+
+%% \subsection{Declarative (Logic) Semantics}
 
 %% \noindent
 %% \begin{tabu} to \textwidth{X[c] X[c]}
@@ -376,13 +515,11 @@ mappend          & = & \fixexp{m}{\lamdefexpa{s g}{\threematchexp{s}%
 %% \bottomrule
 %% \end{tabu}
 
-
-
-
 \vspace{.5cm}
 
 \bibliographystyle{plain}
 \bibliography{semantics}
+
 \end{document}
 
 
