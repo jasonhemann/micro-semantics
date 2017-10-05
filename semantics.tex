@@ -20,6 +20,7 @@
 \usepackage{calrsfs}  %% also fraktur kinda fonts
 \usepackage{mathalfa} %% for math alphabets
 \usepackage{stmaryrd}  %% for additional symbols
+\usepackage{xparse}  %% fancier than newcommand for using multiple arguments &co.
 \usepackage{moreverb}
 %% ^^ These are the best we can do without xetex and real unicode symbols in verbatim
 \usepackage{subfiles} %% a nice alternative to \include 
@@ -77,7 +78,6 @@
 %% \setmainfont{Junicode}
 %% \newfontfamily\myregularfont{Junicode}
 %% \newfontfamily\mychinesefont{IPAexMincho}
- 
 %% \usepackage[CJK]{ucharclasses}
 %% \setTransitionsForCJK{\mychinesefont}{\myregularfont}
 %% \usepackage{lmodern}
@@ -229,6 +229,8 @@ which was good.
 %%  \freevarsf{\succeedv}                 & \begin{aligned}[t] x & = a                                                       \\ & =b\end{aligned}  \\
 %% \bottomrule
 %% \end{tabu}
+
+
 
 
 \section{Substitution}
@@ -390,6 +392,35 @@ mappend          & = & \fixexp{m}{\lamdefexpa{s g}{\threematchexp{s}%
 
 \subsection{Reduction Semantics}
 
+\[
+\begin{tabu}{r l l l}
+  \toprule
+  \multicolumn{4}{c}{\text{Contexts}}                                            \\
+  \midrule
+  \Ctxt & \bnfrepl & \Hole                     & \text{Goal Evaluation Contexts} \\
+        & \alt     & \conjunctionexp{\Ctxt}{G} &                                 \\
+  \bottomrule
+\end{tabu}
+\]
+
+
+\[
+\begin{tabu}{rcll}
+\sstep[g] {FreshVar} {\InCtxtsig{\freshvariableexp{x}{G}}} {\InCtxtsig{\subst{\phi}{x}{G}}} \\
+%% \sstep[g] {\InCtxtsig{\freshvariableexp{x}{G}}}    {\InCtxtsig{\subst{\phi}{x}{G}}}       {\text{where $\sigma$ is fresh}}    \\
+% \sstep[g] {\InCtxtsig{\syntequalexp{t}{\tprimev}}} {\InCtxtof{\succeedv}{\sigma^{'}}}     {\text{where $\sigma^{'} = \text{unify}(t,\tprimev,\sigma)$}} \\
+% \sstep[g] {\InCtxtsig{\syntequalexp{t}{\tprimev}}} {\InCtxtof{\failv}{\sigma_{\emptyset}}} {\text{otherwise}}                                           \\
+% \sstep[g] {\InCtxtsig{\conjunctionexp{\failv}{G}}} {\InCtxtof{\failv}{\sigma_{\emptyset}}} {}                                            \\
+% \sstep[g] {\InCtxtsig{\conjunctionexp{\succeedv}{G}}} {\InCtxtsig{G}} {} 
+\end{tabu}
+\]
+
+
+%% % \sstep {\InCtxtsig{\freshvariableexp{x}{G}}}    {\InCtxtsig{\subst{\phi}{x}{G}}}       {\text{where $\sigma$ is fresh}}                            \\
+%% 
+
+
+
 I don't know that I have a whole lot that I know about this here. I
 think the simplest way to think about it right now is to just
 \emph{show} a rewrite of a program that I'm thinking about. This isn't
@@ -521,6 +552,7 @@ the subtree on the Y axis.
 \bibliography{semantics}
 
 \end{document}
+
 
 
 %% As a simplifying assumption, we allow unary relations. This will

@@ -1,12 +1,12 @@
 %% FILENAME: defs.tex
 %% AUTHOR:   Cameron Swords
 
-\usepackage{amsmath, listings, proof, amssymb, xspace, stmaryrd, calrsfs} %% amsthm
+\usepackage{amsmath, listings, proof, amssymb, xspace, stmaryrd, calrsfs, xparse} %% amsthm
 
 %%------------------------------------------------------------------------
 %% DEFINITION HELPERS
-%%------------------------------------------------------------------------
 
+\DeclareDocumentCommand{\foocmd}{ O{default1} O{default2} m }{#1~#2~#3}
 \newcommand{\alt}{\ \ |\ \ }
 \newcommand{\comp}[1]{\llbracket #1 \rrbracket}
 \newcommand{\compin}[2]{\llbracket #1 \rrbracket_{#2}}
@@ -28,7 +28,8 @@
 
 \newcommand{\Ctxt}       {\mathcal{E}}
 \newcommand{\InCtxt} [1] {\Ctxt[#1]}
-
+\newcommand{\InCtxtsig} [1] {\Ctxt[#1]_{\sigma}}
+\newcommand{\InCtxtof} [2] {\Ctxt[#1]_{#2}}
 %%------------------------------------------------------------------------
 %% REDUCTION RELATION MACROS
 %%------------------------------------------------------------------------
@@ -36,10 +37,11 @@
 \newcommand{\subst} [3]    {#3 [#2 / #1]}
 \newcommand{\dstep} [2]    {#1 \ \Downarrow\  #2}
 
-\newcommand{\ssosredex}        {\rightarrow}
-\newcommand{\ctxtreduce}       {\mapsto}
-\newcommand{\sstep}     [3] [] {#2 &\ssosredex&  #3 &\textsc{#1}}
-\newcommand{\ctxtstep}  [3] [] {#2 &\ctxtreduce& #3 &\textsc{#1}}
+\newcommand{\ssosredex}  [1] [] {\rightarrow_{#1}}
+\newcommand{\ctxtreduce} [1] [] {\mapsto_{#1}}
+
+\newcommand{\sstep}     [4] [] {#3 &\ssosredex[#1]&  #4 &\textsc{#2}}
+\newcommand{\ctxtstep}  [4] [] {#3 &\ctxtreduce[#1]& #4 &\textsc{#2}}
 
 %%------------------------------------------------------------------------
 %% TYPE DEFINITION MACROS
@@ -166,3 +168,6 @@
 \newcommand{\boundvarsf}   [1] {\mathscr{BV}(#1)}
 
 \newcommand{\bnfrepl}         {\mathsf{::=}}
+
+
+\newcommand{\Hole} {\square}
