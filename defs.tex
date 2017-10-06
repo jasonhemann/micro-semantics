@@ -29,8 +29,17 @@
                                 {\mathcal{E}}
                                 {\mathcal{E}_{#1}}}
 \newcommand{\InCtxt} [2] [] {\Ctxt[#1]~[#2]}
-\newcommand{\InCtxtsig} [1] {{\Ctxt~[#1]}_{\sigma}}
-\newcommand{\InCtxtof} [2] {{\Ctxt~[#1]}_{#2}}
+\newcommand{\InCtxtOfSig} [2] [] {\InCtxtOf[#1]{#2}[\sigma]}
+%% \newcommand{\InCtxtsig} [2] [] {{\Ctxt[#1]~[#2]}_{\sigma}}
+\NewDocumentCommand \InCtxtOf {o m o}
+  {\IfNoValueTF {#1}
+    {\IfNoValueTF {#3}
+       {{\Ctxt}[#2]}
+       {{\Ctxt}[#2]_{#3}}}
+    {\IfNoValueTF {#3}
+       {\Ctxt[#1][#2]}
+       {\Ctxt[#1][#2]_{#3}}}}
+%% \newcommand{\InCtxtof} [2] {{\Ctxt~[#1]}_{#2}}
 %%------------------------------------------------------------------------
 %% REDUCTION RELATION MACROS
 %%------------------------------------------------------------------------
