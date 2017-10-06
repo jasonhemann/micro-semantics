@@ -37,6 +37,7 @@
 \usepackage[american]{babel} %% for language-ing things in pdflatex, for xelatex use polyglossia
 %% \usepackage{polyglossia}
 \usepackage{mathtools} %% loads amsmath, which needs to be before hyperref
+\usepackage{braket} %% gives set and \mid
 \usepackage{latexsym,amsfonts,amssymb,txfonts,pxfonts,wasysym} %% additional symbols 
 \usepackage[normalem]{ulem} %% \uline{...}, \uwave{...},
 \usepackage[ampersand]{easylist} %% alternate, simpler format for listing items.
@@ -181,14 +182,14 @@ which was good.
 \freevarsf{c}                            & = & \emptyset                                            \\
 \freevarsf{\succeedv}                    & = & \emptyset                                            \\
 \freevarsf{\failv}                       & = & \emptyset                                            \\  
-\freevarsf{x}                            & = & \{x\}                                                \\
+\freevarsf{x}                            & = & \set{x}                                                \\
 \freevarsf{\relcallexp{n}{t}}            & = & \freevarsf{t}                                        \\ 
 \freevarsf{\consexp{t}{\tprimev}}        & = & \freevarsf{t} \cup \freevarsf{\tprimev}              \\
 \freevarsf{\syntequalexp{t}{\tprimev}}   & = & \freevarsf{t} \cup \freevarsf{\tprimev}              \\
 \freevarsf{\disjunctionexp{g}{\gprimev}} & = & \freevarsf{g} \cup \freevarsf{\gprimev}              \\
 \freevarsf{\conjunctionexp{g}{\gprimev}} & = & \freevarsf{g} \cup \freevarsf{\gprimev}              \\
-\freevarsf{\freshvariableexp{x}{g}}      & = & \freevarsf{g} \setminus \{x\}                        \\
-\freevarsf{\defrelexp{n}{x}{g}}          & = & \freevarsf{g} \setminus \{x\}                        \\
+\freevarsf{\freshvariableexp{x}{g}}      & = & \freevarsf{g} \setminus \set{x}                        \\
+\freevarsf{\defrelexp{n}{x}{g}}          & = & \freevarsf{g} \setminus \set{x}                        \\
 \freevarsf{\relEnv}                      & = & \freevarsf{d_{1}} \cup \ldots \cup \freevarsf{d_{n}} \\
 \freevarsf{\relEnv\ g}                   & = & \freevarsf{\relEnv} \cup \freevarsf{g}               \\
 \bottomrule
@@ -213,9 +214,9 @@ which was good.
 \boundvarsf{\syntequalexp{t}{\tprimev}}   & = & \boundvarsf{t} \cup \boundvarsf{\tprimev}                 \\
 \boundvarsf{\disjunctionexp{g}{\gprimev}} & = & \boundvarsf{g} \cup \boundvarsf{\gprimev}                 \\
 \boundvarsf{\conjunctionexp{g}{\gprimev}} & = & \boundvarsf{g} \cup \boundvarsf{\gprimev}                 \\
-\boundvarsf{\freshvariableexp{x}{g}}      & = & \boundvarsf{g} \cup \{x\}\ \text{if}\ x \in \freevarsf{g} \\
+\boundvarsf{\freshvariableexp{x}{g}}      & = & \boundvarsf{g} \cup \set{x}\ \text{if}\ x \in \freevarsf{g} \\
                                           & = & \boundvarsf{g}\ \text{otherwise}                          \\
-\boundvarsf{\defrelexp{n}{x}{g}}          & = & \boundvarsf{g} \cup \{x\}\ \text{if}\ x \in \freevarsf{g} \\
+\boundvarsf{\defrelexp{n}{x}{g}}          & = & \boundvarsf{g} \cup \set{x}\ \text{if}\ x \in \freevarsf{g} \\
                                           & = & \boundvarsf{g}\ \text{otherwise}                          \\
 \boundvarsf{\relEnv}                      & = & \boundvarsf{d_{1}} \cup \ldots \cup \boundvarsf{d_{n}}    \\
 \boundvarsf{\relEnv\ g}                   & = & \boundvarsf{\relEnv} \cup \boundvarsf{g}                  \\
@@ -395,13 +396,29 @@ mappend          & = & \fixexp{m}{\lamdefexpa{s g}{\threematchexp{s}%
 \[
 \begin{tabu}{r l l l}
   \toprule
-  \multicolumn{4}{c}{\text{Contexts}}                                                  \\
+  \multicolumn{4}{c}{\text{Contexts}}                                                           \\
   \midrule
-  \Ctxt[g] & \bnfrepl & \Hole                        & \text{Goal Evaluation Contexts} \\
-           & \alt     & \conjunctionexp{\Ctxt[g]}{G} &                                 \\
+         F & \bnfrepl & .                                     &                                 \\ 
+           & \alt     & g, \sigma                             &                                 \\
+           & \alt     & \disjunctionexp{F}{F}                 &                                 \\
+           &          &                                       &                                 \\ 
+         S & \bnfrepl & \Hole                                 &                                 \\ 
+           & \alt     & \disjunctionexp{\succeedv, \sigma}{S} &                                 \\
+%%           & \alt     & \disjunctionexp{\failv, \sigma}{S}    &                                 \\
+           &          &                                       &                                 \\ 
+  \Ctxt[g] & \bnfrepl & \Hole                                 & \text{Goal Evaluation Contexts} \\
+           & \alt     & \conjunctionexp{\Ctxt[g]}{G}          &                                 \\
+           &          &                                       &                                 \\ 
+  \Ctxt[t] & \bnfrepl & \Hole                                 & \text{Tree Evaluation Contexts} \\
+           & \alt     & \disjunctionexp{\Ctxt[t]}{F}          &                                 \\
+           &          &                                       &                                 \\ 
   \bottomrule
 \end{tabu}
 \]
+
+I could change these rules to now just have failed unifications in
+substitutions get re-written as $\bot$. We could then remove $bot$
+whenever it comes up.
 
 \[
 \begin{tabu}{rclll}
@@ -412,6 +429,9 @@ mappend          & = & \fixexp{m}{\lamdefexpa{s g}{\threematchexp{s}%
 \sstep[g] [And-2]    {\InCtxtOfSig[g]{\conjunctionexp{\succeedv}{G}}} {\InCtxtOfSig[g]{G}} {} \\ 
 \end{tabu}
 \]
+
+
+
 
 
 %% % \sstep {\InCtxtsig{\freshvariableexp{x}{G}}}    {\InCtxtsig{\subst{\phi}{x}{G}}}       {\text{where $\sigma$ is fresh}}                            \\
