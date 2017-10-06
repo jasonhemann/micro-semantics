@@ -6,7 +6,7 @@
 %%------------------------------------------------------------------------
 %% DEFINITION HELPERS
 
-\DeclareDocumentCommand{\foocmd}{ O{default1} O{default2} m }{#1~#2~#3}
+
 \newcommand{\alt}{\ \ |\ \ }
 \newcommand{\comp}[1]{\llbracket #1 \rrbracket}
 \newcommand{\compin}[2]{\llbracket #1 \rrbracket_{#2}}
@@ -25,11 +25,12 @@
 
 \newcommand{\infr} [3] [] {\infer[\textsc{#1}]{#3}{#2}}
 \newcommand{\iand}        {\qquad}
-
-\newcommand{\Ctxt}       {\mathcal{E}}
-\newcommand{\InCtxt} [1] {\Ctxt[#1]}
-\newcommand{\InCtxtsig} [1] {\Ctxt[#1]_{\sigma}}
-\newcommand{\InCtxtof} [2] {\Ctxt[#1]_{#2}}
+\NewDocumentCommand \Ctxt {o} {\IfNoValueTF {#1} 
+                                {\mathcal{E}}
+                                {\mathcal{E}_{#1}}}
+\newcommand{\InCtxt} [2] [] {\Ctxt[#1]~[#2]}
+\newcommand{\InCtxtsig} [1] {{\Ctxt~[#1]}_{\sigma}}
+\newcommand{\InCtxtof} [2] {{\Ctxt~[#1]}_{#2}}
 %%------------------------------------------------------------------------
 %% REDUCTION RELATION MACROS
 %%------------------------------------------------------------------------
@@ -40,8 +41,8 @@
 \newcommand{\ssosredex}  [1] [] {\rightarrow_{#1}}
 \newcommand{\ctxtreduce} [1] [] {\mapsto_{#1}}
 
-\newcommand{\sstep}     [4] [] {#3 &\ssosredex[#1]&  #4 &\textsc{#2}}
-\newcommand{\ctxtstep}  [4] [] {#3 &\ctxtreduce[#1]& #4 &\textsc{#2}}
+\NewDocumentCommand \sstep { O{} O{} m m m} {#3 &\ssosredex[#1]& #4 & #5 &\textsc{#2}} 
+\NewDocumentCommand \ctxtstep { O{} O{} m m m} {#3 &\ctxtreduce[#1]& #4 & #5 &\textsc{#2}}
 
 %%------------------------------------------------------------------------
 %% TYPE DEFINITION MACROS
@@ -107,11 +108,15 @@
 %% \newcommand{\evalin}             [2] {\llbracket\ #1\rrbracket_{#2}}
 
 %% fresh
+
+\newcommand{\conjop} {\wedge}
+\newcommand{\disjop} {\vee} 
+
 \newcommand{\freshvariableexp}  [2] {\exists #1 . #2}
 \newcommand{\relcallexp}        [2] {#1\ #2}
 \newcommand{\syntequalexp}      [2] {#1\ \equiv^{?}\ #2}
-\newcommand{\conjunctionexp}     [2] {{#1}\, \wedge\, {#2}}
-\newcommand{\disjunctionexp}     [2] {{#1}\, \vee\, {#2}}
+\newcommand{\conjunctionexp}     [2] {{#1}\, \conjop\, {#2}}
+\newcommand{\disjunctionexp}     [2] {{#1}\, \disjop\, {#2}}
 \newcommand{\disjexp}            [2] {\mathsf{disj}\, #1\, #2}
 \newcommand{\conjexp}            [2] {\mathsf{conj}\, #1\, #2}
 
