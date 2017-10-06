@@ -392,26 +392,24 @@ mappend          & = & \fixexp{m}{\lamdefexpa{s g}{\threematchexp{s}%
 
 \subsection{Reduction Semantics}
 
-
-
 \[
 \begin{tabu}{r l l l}
   \toprule
-  \multicolumn{4}{c}{\text{Contexts}}                                            \\
+  \multicolumn{4}{c}{\text{Contexts}}                                                  \\
   \midrule
-  \Ctxt[g] & \bnfrepl & \Hole                     & \text{Goal Evaluation Contexts} \\
-        & \alt     & \conjunctionexp{\Ctxt[g]}{G} &                                 \\
+  \Ctxt[g] & \bnfrepl & \Hole                        & \text{Goal Evaluation Contexts} \\
+           & \alt     & \conjunctionexp{\Ctxt[g]}{G} &                                 \\
   \bottomrule
 \end{tabu}
 \]
 
 \[
 \begin{tabu}{rclll}
-\sstep[g] [FreshVar] {\InCtxtOfSig[g]{\freshvariableexp{x}{G}}} {\InCtxtOfSig[g]{\subst{\phi}{x}{G}}} {\text{for fresh $\sigma$}}  \\
-\sstep[g] [Unify-1] {\InCtxtOfSig[g]{\syntequalexp{t}{\tprimev}}} {\InCtxtOf[g]{\succeedv}[\sigma^{'}]}     {\text{where $\sigma^{'} = \text{unify}(t,\tprimev,\sigma)$}} \\
-\sstep[g] [Unify-2] {\InCtxtOfSig[g]{\syntequalexp{t}{\tprimev}}} {\InCtxtOf[g]{\failv}[\sigma_{\emptyset}]} {\text{otherwise}}                                           \\
-\sstep[g] [And-1] {\InCtxtOfSig[g]{\conjunctionexp{\failv}{G}}} {\InCtxtOf[g]{\failv}[\sigma_{\emptyset}]} {}                                            \\
-\sstep[g] [And-2] {\InCtxtOfSig[g]{\conjunctionexp{\succeedv}{G}}} {\InCtxtOfSig[g]{G}} {} \\ 
+\sstep[g] [FreshVar] {\InCtxtOfSig[g]{\freshvariableexp{x}{G}}}       {\InCtxtOfSig[g]{\subst{\phi}{x}{G}}}     {\text{for fresh $\sigma$}}  \\
+\sstep[g] [Unify-1]  {\InCtxtOfSig[g]{\syntequalexp{t}{\tprimev}}}    {\InCtxtOf[g]{\succeedv}[\sigma^{'}]}     {\text{where $\sigma^{'} = \text{unify}(t,\tprimev,\sigma)$}} \\
+\sstep[g] [Unify-2]  {\InCtxtOfSig[g]{\syntequalexp{t}{\tprimev}}}    {\InCtxtOf[g]{\failv}[\sigma_{\emptyset}]} {\text{otherwise}}                                           \\
+\sstep[g] [And-1]    {\InCtxtOfSig[g]{\conjunctionexp{\failv}{G}}}    {\InCtxtOf[g]{\failv}[\sigma_{\emptyset}]} {}                                            \\
+\sstep[g] [And-2]    {\InCtxtOfSig[g]{\conjunctionexp{\succeedv}{G}}} {\InCtxtOfSig[g]{G}} {} \\ 
 \end{tabu}
 \]
 
