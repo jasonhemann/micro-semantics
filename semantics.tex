@@ -120,8 +120,6 @@
 \toprule
 \multicolumn{4}{c}{\text{Expression Language}}                                    \\
 \midrule
- r       &          &                              & \text{Relation Variables}    \\
-         &          &                              &                              \\
  \relEnv & \bnfrepl &                              & \text{Relation Environments} \\
          & \alt     & d_{1}, \ldots, d_{n}         &                              \\
          &          &                              &                              \\
@@ -167,6 +165,8 @@
 \end{tabu}
 \]
 
+%%  r       &          &                              & \text{Relation Variables}    \\
+%%         &          &                              &                              \\
 %% , \gprimev
 % I'm now intending the $\relcallexp{n}{t}$ form to mean relation
 % invocation, and the $\freshvariableexp{x}{g}$ form to mean scoping a
@@ -248,21 +248,31 @@ The term language itself doesn't seem to matter, so long as we can
 unify them, substitute variables into them, and the like.
 
 \[
-\begin{tabu}{r c r l l l}
+\begin{tabu}{r l l l}
 \toprule
-\multicolumn{5}{c}{\text{Term Language}}                                                                       \\
+\multicolumn{4}{c}{\text{Term Language}}                      \\
 \midrule
-  \text{Const}    & \ni & c           &          &                              &                              \\ 
-  \text{Vars}     & \ni & x           &          &                              &                              \\
-                  &     &             &          &                              &                              \\
-  \text{Term}     & \ni & t, \tprimev & \bnfrepl &                              & \text{Terms}                 \\ 
-                  &     &             & \alt     & c                            & \text{Constants}             \\
-                  &     &             & \alt     & x                            & \text{Term Variables}        \\
-                  &     &             & \alt     & \consexp{t}{\tprimev}        & \text{Pairs}                 \\ 
-                  &     &             &          &                              &                              \\
+ t & \bnfrepl &                       & \text{Terms}          \\ 
+   & \alt     & c                     & \text{Constants}      \\
+   & \alt     & x                     & \text{Term Variables} \\
+   & \alt     & \consexp{t}{\tprimev} & \text{Pairs}          \\ 
+   &          &                       &                       \\
 \bottomrule
 \end{tabu}
 \]
+
+%% r c 
+ % c           &          &                              &                              \\ 
+ % x           &          &                              &                              \\
+ %             &          &                              &                              \\
+  % \text{Const}    & \ni &
+  % \text{Vars}     & \ni &
+  %                 &     &
+  % \text{Term}     & \ni &
+  %                 &     &
+  %                 &     &
+  %                 &     &
+  %                 &     &
 
 
 \section{Substitution}
