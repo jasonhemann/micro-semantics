@@ -115,147 +115,114 @@
 
 \section{Grammar}
 
-I'm now intending the $\relcallexp{n}{t}$ form to mean relation
-invocation, and the $\freshvariableexp{x}{g}$ form to mean scoping a
-local fresh variable, as you did. I left the $\ni$ parts because a)
-it's easier to remove than to add and 2) I was cargo-culting (from
-memory, incorrectly) something Clinger did in an old
-paper~\cite{clinger1984scheme}, which I include as a secondary
-attachment. If this is not relevant because, say, syntactic domains
-are only relevant when doing denotational semantics, then yeah I'll
-scrap'em. Also, the standard parenthetic conventions apply. \\
-
-\vspace{.5cm}
-
 \[
-\begin{tabu}{r c r l l l}
+\begin{tabu}{r l l l}
 \toprule
-\multicolumn{5}{c}{\text{Term Language}}                                                                       \\
+\multicolumn{4}{c}{\text{Expression Language}}                                    \\
 \midrule
-  \text{Const}    & \ni & c           &          &                              &                              \\ 
-  \text{Vars}     & \ni & x           &          &                              &                              \\
-                  &     &             &          &                              &                              \\
-  \text{Term}     & \ni & t, \tprimev & \bnfrepl &                              & \text{Terms}                 \\ 
-                  &     &             & \alt     & c                            & \text{Constants}             \\
-                  &     &             & \alt     & x                            & \text{Term Variables}        \\
-                  &     &             & \alt     & \consexp{t}{\tprimev}        & \text{Pairs}                 \\ 
-                  &     &             &          &                              &                              \\
-\toprule
-\multicolumn{5}{c}{\text{Expression Language}}                                                                 \\
-\midrule
-  \text{Relnames} & \ni & r           &          &                              & \text{Relation Variables}    \\
-                  &     &             &          &                              &                              \\
-  \text{Rel-env}  & \ni & \relEnv     & \bnfrepl &                              & \text{Relation Environments} \\
-                  &     &             & \alt     & d_{1}, \ldots, d_{n}         &                              \\
-                  &     &             &          &                              &                              \\
-  \text{Program}  & \ni & P           & \bnfrepl &                              & \text{Programs}              \\
-                  &     &             & \alt     & \relEnv\ g                   &                              \\
-                  &     &             &          &                              &                              \\
-  \text{Relation} & \ni & d           & \bnfrepl &                              & \text{Relations}             \\
-                  &     &             & \alt     & \defrelexp{r}{x}{g}          &                              \\
-                  &     &             &          &                              &                              \\
-  \text{Goal}     & \ni & g, \gprimev & \bnfrepl &                              & \text{Goals}                 \\
-                  &     &             & \alt     & \succeedv                    & \text{Trivial success}       \\
-                  &     &             & \alt     & \failv                       & \text{Trivial failure}       \\
-                  &     &             & \alt     & \syntequalexp{t}{\tprimev}   & \text{Syntactic equality}    \\
-                  &     &             & \alt     & \disjunctionexp{g}{\gprimev} & \text{Disjunction}           \\
-                  &     &             & \alt     & \conjunctionexp{g}{\gprimev} & \text{Conjunction}           \\
-                  &     &             & \alt     & \relcallexp{r}{t}            & \text{Relation call}         \\
-                  &     &             & \alt     & \freshvariableexp{x}{g}      & \text{Variable introduction} \\
-                  &     &             &          &                              &                              \\
-\toprule
-\multicolumn{5}{c}{\text{Search Trees}}                                                                        \\
-\midrule
-                  &     & T           & \bnfrepl &                              & \text{Trees}                 \\
-                  &     &             & \alt     & .                            & \text{Empty Node}            \\
-                  &     &             & \alt     & g_{\sigma}                   & \text{Goal Node}             \\ 
-                  &     &             & \alt     & \disjunctionexp{T}{T}        & \text{Tree Disjunct Node}    \\
-                  &     &             & \alt     & d~T                          & \text{Delay Node}            \\
-                  &     &             &          &                              &                              \\ 
+ r       &          &                              & \text{Relation Variables}    \\
+         &          &                              &                              \\
+ \relEnv & \bnfrepl &                              & \text{Relation Environments} \\
+         & \alt     & d_{1}, \ldots, d_{n}         &                              \\
+         &          &                              &                              \\
+ P       & \bnfrepl &                              & \text{Programs}              \\
+         & \alt     & \relEnv\ g                   &                              \\
+         &          &                              &                              \\
+ d       & \bnfrepl &                              & \text{Relations}             \\
+         & \alt     & \defrelexp{r}{x}{g}          &                              \\
+         &          &                              &                              \\
+ g       & \bnfrepl &                              & \text{Goals}                 \\
+         & \alt     & \succeedv                    & \text{Trivial success}       \\
+         & \alt     & \failv                       & \text{Trivial failure}       \\
+         & \alt     & \syntequalexp{t}{\tprimev}   & \text{Syntactic equality}    \\
+         & \alt     & \disjunctionexp{g}{\gprimev} & \text{Disjunction}           \\
+         & \alt     & \conjunctionexp{g}{\gprimev} & \text{Conjunction}           \\
+         & \alt     & \relcallexp{r}{t}            & \text{Relation call}         \\
+         & \alt     & \freshvariableexp{x}{g}      & \text{Variable introduction} \\
+         &          &                              &                              \\
+ h       & \bnfrepl &                              & \text{Subset of Goals}       \\
+         & \alt     & \succeedv                    & \text{Trivial success}       \\
+         & \alt     & \failv                       & \text{Trivial failure}       \\
+         & \alt     & \syntequalexp{t}{\tprimev}   & \text{Syntactic equality}    \\
+         & \alt     & \conjunctionexp{h}{\hprimev} & \text{Conjunction}           \\
+         & \alt     & \freshvariableexp{x}{h}      & \text{Variable introduction} \\
+         &          &                              &                              \\
+
 \bottomrule
 \end{tabu}
 \]
 
-
 \[
-\begin{tabu}{r c r l l l}
+\begin{tabu}{r l l l}
 \toprule
-\multicolumn{5}{c}{\text{Contexts}}                                                                                  \\
+\multicolumn{4}{c}{\text{Search Trees}}                                                                        \\
 \midrule
- &  & \Ctxt[s] & \bnfrepl &                                               & \text{Stream Evaluation Contexts}        \\ 
- &  &          & \alt     & \Hole                                         &                                          \\
- &  &          & \alt     & \disjunctionexp{\succeedv_{\sigma}}{\Ctxt[s]} &                                          \\
- &  &          &          &                                               &                                          \\ 
- &  & \Ctxt[g] & \bnfrepl &                                               & \text{Goal Evaluation Contexts}          \\
- &  &          & \alt     & \Hole                                         &                                          \\
- &  &          & \alt     & \conjunctionexp{\Ctxt[g]}{G}                  &                                          \\
- &  &          &          &                                               &                                          \\ 
- &  & \Ctxt[t] & \bnfrepl &                                               & \text{Tree Evaluation Contexts}          \\
- &  &          & \alt     & \Hole                                         &                                          \\
- &  &          & \alt     & \disjunctionexp{\Ctxt[t]}{T}                  &                                          \\
- &  &          & \alt     & \disjunctionexp{.}{\Ctxt[t]}                  & \text{... but I don't know why this one} \\
- &  &          &          &                                               &                                          \\ 
+  T           & \bnfrepl &                              & \text{Trees}                 \\
+              & \alt     & .                            & \text{Empty Node}            \\
+              & \alt     & g_{\sigma}                   & \text{Goal Node}             \\ 
+              & \alt     & \disjunctionexp{T}{T}        & \text{Tree Disjunct Node}    \\
+              & \alt     & d~T                          & \text{Delay Node}            \\
+              &          &                              &                              \\ 
 \bottomrule
 \end{tabu}
 \]
 
-\vspace{.5cm}
+%% , \gprimev
+% I'm now intending the $\relcallexp{n}{t}$ form to mean relation
+% invocation, and the $\freshvariableexp{x}{g}$ form to mean scoping a
+% local fresh variable, as you did. I left the $\ni$ parts because a)
+% it's easier to remove than to add and 2) I was cargo-culting (from
+% memory, incorrectly) something Clinger did in an old
+% paper~\cite{clinger1984scheme}, which I include as a secondary
+% attachment. If this is not relevant because, say, syntactic domains
+% are only relevant when doing denotational semantics, then yeah I'll
+% scrap'em. Also, the standard parenthetic conventions apply. \\
 
-Free variables in the term and expression languages. Relations should
-have no free variables in them. Provided it's correct to be able to
-separate \emph{variables} from \emph{relnames} like I've been doing. I
-did manage to correct an error in relation application as a result of doing this,
-which was good.
+% \vspace{.5cm}
 
-\vspace{.5cm}
+
+  % \text{Relnames} & \ni &
+  %                 &     &
+  %                 &     &
+  % \text{Rel-env}  & \ni &
+  %                 &     &
+  % \text{Program}  & \ni &
+  %                 &     &
+  %                 &     &
+  % \text{Relation} & \ni &
+  %                 &     &
+  %                 &     &
+  % \text{Goal}     & \ni &
+  %                 &     &
+  %                 &     &
+  %                 &     &
+  %                 &     &
+  %                 &     &
+  %                 &     &
+  %                 &     &
+  %                 &     &
 
 \[
-\begin{tabu}{l c l}
+\begin{tabu}{r l l l}
 \toprule
-\freevarsf{c}                            & = & \emptyset                                            \\
-\freevarsf{\succeedv}                    & = & \emptyset                                            \\
-\freevarsf{\failv}                       & = & \emptyset                                            \\  
-\freevarsf{x}                            & = & \set{x}                                              \\
-\freevarsf{\relcallexp{n}{t}}            & = & \freevarsf{t}                                        \\ 
-\freevarsf{\consexp{t}{\tprimev}}        & = & \freevarsf{t} \cup \freevarsf{\tprimev}              \\
-\freevarsf{\syntequalexp{t}{\tprimev}}   & = & \freevarsf{t} \cup \freevarsf{\tprimev}              \\
-\freevarsf{\disjunctionexp{g}{\gprimev}} & = & \freevarsf{g} \cup \freevarsf{\gprimev}              \\
-\freevarsf{\conjunctionexp{g}{\gprimev}} & = & \freevarsf{g} \cup \freevarsf{\gprimev}              \\
-\freevarsf{\freshvariableexp{x}{g}}      & = & \freevarsf{g} \setminus \set{x}                      \\
-\freevarsf{\defrelexp{n}{x}{g}}          & = & \freevarsf{g} \setminus \set{x}                      \\
-\freevarsf{\relEnv}                      & = & \freevarsf{d_{1}} \cup \ldots \cup \freevarsf{d_{n}} \\
-\freevarsf{\relEnv\ g}                   & = & \freevarsf{\relEnv} \cup \freevarsf{g}               \\
+\multicolumn{4}{c}{\text{Contexts}}                                                                                  \\
+\midrule
+ \Ctxt[s] & \bnfrepl &                                               & \text{Stream Evaluation Contexts}        \\ 
+          & \alt     & \Hole                                         &                                          \\
+          & \alt     & \disjunctionexp{\succeedv_{\sigma}}{\Ctxt[s]} &                                          \\
+          &          &                                               &                                          \\ 
+ \Ctxt[g] & \bnfrepl &                                               & \text{Goal Evaluation Contexts}          \\
+          & \alt     & \Hole                                         &                                          \\
+          & \alt     & \conjunctionexp{\Ctxt[g]}{G}                  &                                          \\
+          &          &                                               &                                          \\ 
+ \Ctxt[t] & \bnfrepl &                                               & \text{Tree Evaluation Contexts}          \\
+          & \alt     & \Hole                                         &                                          \\
+          & \alt     & \disjunctionexp{\Ctxt[t]}{T}                  &                                          \\
+          & \alt     & \disjunctionexp{.}{\Ctxt[t]}                  & \text{... but I don't know why this one} \\
+          &          &                                               &                                          \\ 
 \bottomrule
 \end{tabu}
 \]
-
-\vspace{.5cm}
-
-\noindent Bound variables, defined similarly. 
-
-\vspace{.5cm}
-
-\[
-\begin{tabu}{l c l}
-\toprule
-\boundvarsf{c}                                       & =                    & \emptyset                                                                                                                                                         \\
-\boundvarsf{\succeedv}                               & =                    & \emptyset                                                                                                                                                         \\
-\boundvarsf{\failv}                                  & =                    & \emptyset                                                                                                                                                         \\  
-\boundvarsf{x}                                       & =                    & \emptyset                                                                                                                                                         \\
-\boundvarsf{\relcallexp{n}{t}}                       & =                    & \boundvarsf{t}                                                                                                                                                    \\ 
-\boundvarsf{\consexp{t}{\tprimev}}                   & =                    & \boundvarsf{t} \cup \boundvarsf{\tprimev}                                                                                                                         \\
-\boundvarsf{\syntequalexp{t}{\tprimev}}              & =                    & \boundvarsf{t} \cup \boundvarsf{\tprimev}                                                                                                                         \\
-\boundvarsf{\disjunctionexp{g}{\gprimev}}            & =                    & \boundvarsf{g} \cup \boundvarsf{\gprimev}                                                                                                                         \\
-\boundvarsf{\conjunctionexp{g}{\gprimev}}            & =                    & \boundvarsf{g} \cup \boundvarsf{\gprimev}                                                                                                                         \\
-\boundvarsf{\freshvariableexp{x}{g}}                 & =                    & \boundvarsf{g} \cup \set{x}\ \text{if}\ x \in \freevarsf{g}                                                                                                       \\
-                                                     & =                    & \boundvarsf{g}\ \text{otherwise}                                                                                                                                  \\
-\boundvarsf{\defrelexp{n}{x}{g}}                     & =                    & \boundvarsf{g} \cup \set{x}\ \text{if}\ x \in \freevarsf{g}                                                                                                       \\
-                                                     & =                    & \boundvarsf{g}\ \text{otherwise}                                                                                                                                  \\
-\boundvarsf{\relEnv}                                 & =                    & \boundvarsf{d_{1}} \cup \ldots \cup \boundvarsf{d_{n}}                                                                                                            \\
-\boundvarsf{\relEnv\ g}                              & =                    & \boundvarsf{\relEnv} \cup \boundvarsf{g}                                                                                                                          \\
-\bottomrule
-\end{tabu}
-\] 
 
 \subsection{Reduction Semantics}
 
@@ -276,6 +243,27 @@ which was good.
 \sstep[t] [Interleave-2] {\InCtxt[s]{d~T}} {\InCtxt[s]{T}} \\ 
 \end{tabu}
 \]
+
+The term language itself doesn't seem to matter, so long as we can
+unify them, substitute variables into them, and the like.
+
+\[
+\begin{tabu}{r c r l l l}
+\toprule
+\multicolumn{5}{c}{\text{Term Language}}                                                                       \\
+\midrule
+  \text{Const}    & \ni & c           &          &                              &                              \\ 
+  \text{Vars}     & \ni & x           &          &                              &                              \\
+                  &     &             &          &                              &                              \\
+  \text{Term}     & \ni & t, \tprimev & \bnfrepl &                              & \text{Terms}                 \\ 
+                  &     &             & \alt     & c                            & \text{Constants}             \\
+                  &     &             & \alt     & x                            & \text{Term Variables}        \\
+                  &     &             & \alt     & \consexp{t}{\tprimev}        & \text{Pairs}                 \\ 
+                  &     &             &          &                              &                              \\
+\bottomrule
+\end{tabu}
+\]
+
 
 \section{Substitution}
 
@@ -319,9 +307,64 @@ underlying monad.
  %%  \compin{P}{\sigma}                              & =                    & ???                                                                           &                                                                                   \\ 
 
 
-                    
-   
 
+\subsection{Free \& Bound Variables}
+
+This seems like it doesn't especially matter, but they're \emph{per force}. Free variables in the term and expression languages. Relations should
+have no free variables in them. Provided it's correct to be able to
+separate \emph{variables} from \emph{relnames} like I've been doing. I
+did manage to correct an error in relation application as a result of doing this,
+which was good.
+
+\vspace{.5cm}
+
+\[
+\begin{tabu}{l c l}
+\toprule
+\freevarsf{c}                            & = & \emptyset                                            \\
+\freevarsf{\succeedv}                    & = & \emptyset                                            \\
+\freevarsf{\failv}                       & = & \emptyset                                            \\  
+\freevarsf{x}                            & = & \set{x}                                              \\
+\freevarsf{\relcallexp{n}{t}}            & = & \freevarsf{t}                                        \\ 
+\freevarsf{\consexp{t}{\tprimev}}        & = & \freevarsf{t} \cup \freevarsf{\tprimev}              \\
+\freevarsf{\syntequalexp{t}{\tprimev}}   & = & \freevarsf{t} \cup \freevarsf{\tprimev}              \\
+\freevarsf{\disjunctionexp{g}{\gprimev}} & = & \freevarsf{g} \cup \freevarsf{\gprimev}              \\
+\freevarsf{\conjunctionexp{g}{\gprimev}} & = & \freevarsf{g} \cup \freevarsf{\gprimev}              \\
+\freevarsf{\freshvariableexp{x}{g}}      & = & \freevarsf{g} \setminus \set{x}                      \\
+\freevarsf{\defrelexp{n}{x}{g}}          & = & \freevarsf{g} \setminus \set{x}                      \\
+\freevarsf{\relEnv}                      & = & \freevarsf{d_{1}} \cup \ldots \cup \freevarsf{d_{n}} \\
+\freevarsf{\relEnv\ g}                   & = & \freevarsf{\relEnv} \cup \freevarsf{g}               \\
+\bottomrule
+\end{tabu}
+\]
+
+\vspace{.5cm}
+
+\noindent Bound variables, defined similarly. 
+
+\vspace{.5cm}
+
+\[
+\begin{tabu}{l c l}
+\toprule
+\boundvarsf{c}                            & = & \emptyset                                                   \\
+\boundvarsf{\succeedv}                    & = & \emptyset                                                   \\
+\boundvarsf{\failv}                       & = & \emptyset                                                   \\  
+\boundvarsf{x}                            & = & \emptyset                                                   \\
+\boundvarsf{\relcallexp{n}{t}}            & = & \boundvarsf{t}                                              \\ 
+\boundvarsf{\consexp{t}{\tprimev}}        & = & \boundvarsf{t} \cup \boundvarsf{\tprimev}                   \\
+\boundvarsf{\syntequalexp{t}{\tprimev}}   & = & \boundvarsf{t} \cup \boundvarsf{\tprimev}                   \\
+\boundvarsf{\disjunctionexp{g}{\gprimev}} & = & \boundvarsf{g} \cup \boundvarsf{\gprimev}                   \\
+\boundvarsf{\conjunctionexp{g}{\gprimev}} & = & \boundvarsf{g} \cup \boundvarsf{\gprimev}                   \\
+\boundvarsf{\freshvariableexp{x}{g}}      & = & \boundvarsf{g} \cup \set{x}\ \text{if}\ x \in \freevarsf{g} \\
+                                          & = & \boundvarsf{g}\ \text{otherwise}                            \\
+\boundvarsf{\defrelexp{n}{x}{g}}          & = & \boundvarsf{g} \cup \set{x}\ \text{if}\ x \in \freevarsf{g} \\
+                                          & = & \boundvarsf{g}\ \text{otherwise}                            \\
+\boundvarsf{\relEnv}                      & = & \boundvarsf{d_{1}} \cup \ldots \cup \boundvarsf{d_{n}}      \\
+\boundvarsf{\relEnv\ g}                   & = & \boundvarsf{\relEnv} \cup \boundvarsf{g}                    \\
+\bottomrule
+\end{tabu}
+\] 
 
 \section{Monadic Semantics}
 
