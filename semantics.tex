@@ -162,6 +162,35 @@ scrap'em. Also, the standard parenthetic conventions apply. \\
                   &     &             & \alt     & \conjunctionexp{g}{\gprimev} & \text{Conjunction}           \\
                   &     &             & \alt     & \relcallexp{r}{t}            & \text{Relation call}         \\
                   &     &             & \alt     & \freshvariableexp{x}{g}      & \text{Variable introduction} \\
+                  &     &             &          &                              &                              \\
+\toprule
+\multicolumn{5}{c}{\text{Search Trees}}                                                                        \\
+\midrule
+                  &     & T           & \bnfrepl & .                            &                              \\ 
+                  &     &             & \alt     & g_{\sigma}                   &                              \\
+                  &     &             & \alt     & \disjunctionexp{T}{T}        &                              \\
+                  &     &             & \alt     & d~T                          &                              \\
+                  &     &             &          &                              &                              \\ 
+\bottomrule
+\end{tabu}
+\]
+
+
+\[
+\begin{tabu}{r c r l l l}
+\toprule
+\multicolumn{5}{c}{\text{Contexts}}                                                                                  \\
+\midrule
+                 &      & \Ctxt[s]   & \bnfrepl & \Hole                                         & \text{Stream Evaluation Contexts}        \\ 
+                 &      &            & \alt     & \disjunctionexp{\succeedv_{\sigma}}{\Ctxt[s]} &                                          \\
+                 &      &            &          &                                               &                                          \\ 
+                 &      & \Ctxt[g]   & \bnfrepl & \Hole                                         & \text{Goal Evaluation Contexts}          \\
+                 &      &            & \alt     & \conjunctionexp{\Ctxt[g]}{G}                  &                                          \\
+                 &      &            &          &                                               &                                          \\ 
+                 &      & \Ctxt[t]   & \bnfrepl & \Hole                                         & \text{Tree Evaluation Contexts}          \\
+                 &      &            & \alt     & \disjunctionexp{\Ctxt[t]}{T}                  &                                          \\
+                 &      &            & \alt     & \disjunctionexp{.}{\Ctxt[t]}                  & \text{... but I don't know why this one} \\
+                 &      &            &          &                                               &                                          \\ 
 \bottomrule
 \end{tabu}
 \]
@@ -225,38 +254,14 @@ which was good.
 \] 
 %% \begin{tabu} to .5\textwidth{X[c] X[c]}
 %% \toprule
-%%  \mathcal{FV}  1                                  & Column 2                                                                                                                                                                                 \\
+%%  \mathcal{FV}  1                                  & Column 2 \\
 %% \midrule
-%%  \freevarsf{\succeedv}                            & \begin{aligned}[t] x & = a                                                                                                                                                               \\                  & =b\end{aligned}  \\
+%%  \freevarsf{\succeedv}                            & \begin{aligned}[t] x & = a \\                  & =b\end{aligned}  \\
 %% \bottomrule
 %% \end{tabu}
 
-
 \subsection{Reduction Semantics}
 
-\[
-\begin{tabu}{r l l l}
-  \toprule
-  \multicolumn{4}{c}{\text{Contexts}}                                                                            \\
-  \midrule
-         T & \bnfrepl & .                                             &                                          \\ 
-           & \alt     & g_{\sigma}                                    &                                          \\
-           & \alt     & \disjunctionexp{T}{T}                         &                                          \\
-           & \alt     & d~T                                           &                                          \\
-           &          &                                               &                                          \\ 
-  \Ctxt[s] & \bnfrepl & \Hole                                         & \text{Stream Evaluation Contexts}        \\ 
-           & \alt     & \disjunctionexp{\succeedv_{\sigma}}{\Ctxt[s]} &                                          \\
-           &          &                                               &                                          \\ 
-  \Ctxt[g] & \bnfrepl & \Hole                                         & \text{Goal Evaluation Contexts}          \\
-           & \alt     & \conjunctionexp{\Ctxt[g]}{G}                  &                                          \\
-           &          &                                               &                                          \\ 
-  \Ctxt[t] & \bnfrepl & \Hole                                         & \text{Tree Evaluation Contexts}          \\
-           & \alt     & \disjunctionexp{\Ctxt[t]}{T}                  &                                          \\
-           & \alt     & \disjunctionexp{.}{\Ctxt[t]}                  & \text{... but I don't know why this one} \\
-           &          &                                               &                                          \\ 
-  \bottomrule
-\end{tabu}
-\]
 
 \[
 \begin{tabu}{rclll}
@@ -572,6 +577,7 @@ the subtree on the Y axis.
 \bibliography{semantics}
 
 \end{document}
+
 
 
 
