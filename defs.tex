@@ -28,7 +28,7 @@
 \NewDocumentCommand \Ctxt {o} {\IfNoValueTF {#1} 
                                 {\mathcal{E}}
                                 {\mathcal{E}_{#1}}}
-\newcommand{\InCtxt} [2] [] {\Ctxt[#1]~[#2]}
+\newcommand{\InCtxt} [2] [] {\InCtxtOf[#1]{#2}}
 \newcommand{\InCtxtOfSig} [2] [] {\InCtxtOf[#1]{#2}[\sigma]}
 %% \newcommand{\InCtxtsig} [2] [] {{\Ctxt[#1]~[#2]}_{\sigma}}
 \NewDocumentCommand \InCtxtOf {o m o}
@@ -50,8 +50,8 @@
 \newcommand{\ssosredex}  [1] [] {\rightarrow_{#1}}
 \newcommand{\ctxtreduce} [1] [] {\mapsto_{#1}}
 
-\NewDocumentCommand \sstep { O{} O{} m m m} {#3 &\ssosredex[#1]& #4 & #5 &\textsc{#2}} 
-\NewDocumentCommand \ctxtstep { O{} O{} m m m} {#3 &\ctxtreduce[#1]& #4 & #5 &\textsc{#2}}
+\NewDocumentCommand \sstep { O{} O{} m m O{}} {#3 &\ssosredex[#1]& #4 & #5 &\textsc{#2}} 
+\NewDocumentCommand \ctxtstep { O{} O{} m m O{}} {#3 &\ctxtreduce[#1]& #4 & #5 &\textsc{#2}}
 
 %%------------------------------------------------------------------------
 %% TYPE DEFINITION MACROS
@@ -182,6 +182,5 @@
 \newcommand{\boundvarsf}   [1] {\mathscr{BV}(#1)}
 
 \newcommand{\bnfrepl}         {\mathsf{::=}}
-
 
 \newcommand{\Hole} {\square}
