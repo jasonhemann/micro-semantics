@@ -182,16 +182,19 @@ scrap'em. Also, the standard parenthetic conventions apply. \\
 \toprule
 \multicolumn{5}{c}{\text{Contexts}}                                                                                  \\
 \midrule
-                 &      & \Ctxt[s]   & \bnfrepl & \Hole                                         & \text{Stream Evaluation Contexts}        \\ 
-                 &      &            & \alt     & \disjunctionexp{\succeedv_{\sigma}}{\Ctxt[s]} &                                          \\
-                 &      &            &          &                                               &                                          \\ 
-                 &      & \Ctxt[g]   & \bnfrepl & \Hole                                         & \text{Goal Evaluation Contexts}          \\
-                 &      &            & \alt     & \conjunctionexp{\Ctxt[g]}{G}                  &                                          \\
-                 &      &            &          &                                               &                                          \\ 
-                 &      & \Ctxt[t]   & \bnfrepl & \Hole                                         & \text{Tree Evaluation Contexts}          \\
-                 &      &            & \alt     & \disjunctionexp{\Ctxt[t]}{T}                  &                                          \\
-                 &      &            & \alt     & \disjunctionexp{.}{\Ctxt[t]}                  & \text{... but I don't know why this one} \\
-                 &      &            &          &                                               &                                          \\ 
+ &  & \Ctxt[s] & \bnfrepl &                                               & \text{Stream Evaluation Contexts}        \\ 
+ &  &          & \alt     & \Hole                                         &                                          \\
+ &  &          & \alt     & \disjunctionexp{\succeedv_{\sigma}}{\Ctxt[s]} &                                          \\
+ &  &          &          &                                               &                                          \\ 
+ &  & \Ctxt[g] & \bnfrepl &                                               & \text{Goal Evaluation Contexts}          \\
+ &  &          & \alt     & \Hole                                         &                                          \\
+ &  &          & \alt     & \conjunctionexp{\Ctxt[g]}{G}                  &                                          \\
+ &  &          &          &                                               &                                          \\ 
+ &  & \Ctxt[t] & \bnfrepl &                                               & \text{Tree Evaluation Contexts}          \\
+ &  &          & \alt     & \Hole                                         &                                          \\
+ &  &          & \alt     & \disjunctionexp{\Ctxt[t]}{T}                  &                                          \\
+ &  &          & \alt     & \disjunctionexp{.}{\Ctxt[t]}                  & \text{... but I don't know why this one} \\
+ &  &          &          &                                               &                                          \\ 
 \bottomrule
 \end{tabu}
 \]
@@ -258,7 +261,7 @@ which was good.
 
 \[
 \begin{tabu}{rclll}
-\sstep[g] [FreshVar] {\InCtxtOfSig[g]{\freshvariableexp{x}{G}}}       {\InCtxtOfSig[g]{\subst{\phi}{x}{G}}}[\text{for fresh $\sigma$}] \\
+\sstep[g] [FreshVar] {\InCtxtOfSig[g]{\freshvariableexp{x}{G}}}       {\InCtxtOfSig[g]{\subst{\phi}{x}{G}}}[\text{for fresh $\phi$}] \\
 \sstep[g] [Unify-1]  {\InCtxtOfSig[g]{\syntequalexp{t}{\tprimev}}}    {\InCtxtOf[g]{\succeedv}[\sigma^{'}]}[\text{where $\sigma^{'} = \text{unify}(t,\tprimev,\sigma)$}] \\
 \sstep[g] [Unify-2]  {\InCtxtOfSig[g]{\syntequalexp{t}{\tprimev}}}    {\InCtxtOf[g]{\failv}[\sigma_{\emptyset}]}[\text{otherwise}] \\
 \sstep[g] [And-1]    {\InCtxtOfSig[g]{\conjunctionexp{\failv}{G}}}    {\InCtxtOf[g]{\failv}[\sigma_{\emptyset}]}  \\
