@@ -166,10 +166,11 @@ scrap'em. Also, the standard parenthetic conventions apply. \\
 \toprule
 \multicolumn{5}{c}{\text{Search Trees}}                                                                        \\
 \midrule
-                  &     & T           & \bnfrepl & .                            &                              \\ 
-                  &     &             & \alt     & g_{\sigma}                   &                              \\
-                  &     &             & \alt     & \disjunctionexp{T}{T}        &                              \\
-                  &     &             & \alt     & d~T                          &                              \\
+                  &     & T           & \bnfrepl &                              & \text{Trees}                 \\
+                  &     &             & \alt     & .                            & \text{Empty Node}            \\
+                  &     &             & \alt     & g_{\sigma}                   & \text{Goal Node}             \\ 
+                  &     &             & \alt     & \disjunctionexp{T}{T}        & \text{Tree Disjunct Node}    \\
+                  &     &             & \alt     & d~T                          & \text{Delay Node}            \\
                   &     &             &          &                              &                              \\ 
 \bottomrule
 \end{tabu}
@@ -252,16 +253,8 @@ which was good.
 \bottomrule
 \end{tabu}
 \] 
-%% \begin{tabu} to .5\textwidth{X[c] X[c]}
-%% \toprule
-%%  \mathcal{FV}  1                                  & Column 2 \\
-%% \midrule
-%%  \freevarsf{\succeedv}                            & \begin{aligned}[t] x & = a \\                  & =b\end{aligned}  \\
-%% \bottomrule
-%% \end{tabu}
 
 \subsection{Reduction Semantics}
-
 
 \[
 \begin{tabu}{rclll}
