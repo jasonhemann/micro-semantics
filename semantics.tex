@@ -138,13 +138,6 @@
          & \alt     & \relcallexp{r}{t}            & \text{Relation call}         \\
          & \alt     & \freshvariableexp{x}{g}      & \text{Variable introduction} \\
          &          &                              &                              \\
- h       & \bnfrepl &                              & \text{Subset of Goals}       \\
-         & \alt     & \succeedv                    & \text{Trivial success}       \\
-         & \alt     & \failv                       & \text{Trivial failure}       \\
-         & \alt     & \syntequalexp{t}{\tprimev}   & \text{Syntactic equality}    \\
-         & \alt     & \conjunctionexp{h}{\hprimev} & \text{Conjunction}           \\
-         & \alt     & \freshvariableexp{x}{h}      & \text{Variable introduction} \\
-         &          &                              &                              \\
 \bottomrule
 \end{tabu}
 \]
@@ -152,14 +145,18 @@
 \[
 \begin{tabu}{r l l l}
 \toprule
-\multicolumn{4}{c}{\text{Search Trees}}                                                                        \\
+\multicolumn{4}{c}{\text{Search Trees}}                                             \\
 \midrule
-  T           & \bnfrepl &                              & \text{Trees}                 \\
-              & \alt     & .                            & \text{Empty Node}            \\
-              & \alt     & g_{\sigma}                   & \text{Goal Node}             \\ 
-              & \alt     & \disjunctionexp{T}{T}        & \text{Tree Disjunct Node}    \\
-              & \alt     & d~T                          & \text{Delay Node}            \\
-              &          &                              &                              \\ 
+  V & \bnfrepl &                                        & \text{Values}             \\
+    & \alt     & .                                      & \text{Empty Node}         \\
+    & \alt     & \disjunctionexp{\succeedv_{\sigma}}{V} & \text{Answer}             \\ 
+    &          &                                        &                           \\ 
+  T & \bnfrepl &                                        & \text{Trees}              \\
+    & \alt     & .                                      & \text{Empty Node}         \\
+    & \alt     & g_{\sigma}                             & \text{Goal Node}          \\ 
+    & \alt     & \disjunctionexp{T}{T}                  & \text{Tree Disjunct Node} \\
+    & \alt     & d~T                                    & \text{Delay Node}         \\
+    &          &                                        &                           \\ 
 \bottomrule
 \end{tabu}
 \]
@@ -210,9 +207,9 @@
           & \alt     & \Hole                                         &                                          \\
           & \alt     & \disjunctionexp{\succeedv_{\sigma}}{\Ctxt[s]} &                                          \\
           &          &                                               &                                          \\ 
- \Ctxt[g] & \bnfrepl &                                               & \text{Goal Evaluation Contexts}          \\
+ \Ctxt[G] & \bnfrepl &                                               & \text{Goal Evaluation Contexts}          \\
           & \alt     & \Hole                                         &                                          \\
-          & \alt     & \conjunctionexp{\Ctxt[g]}{G}                  &                                          \\
+          & \alt     & \conjunctionexp{\Ctxt[G]}{g}                  &                                          \\
           &          &                                               &                                          \\ 
  \Ctxt[t] & \bnfrepl &                                               & \text{Tree Evaluation Contexts}          \\
           & \alt     & \Hole                                         &                                          \\
@@ -226,17 +223,17 @@
 
 \[
 \begin{tabu}{rclll}
-\sstep[g] [FreshVar] {\InCtxtOfSig[g]{\freshvariableexp{x}{G}}}       {\InCtxtOfSig[g]{\subst{\phi}{x}{G}}}[\text{for fresh $\phi$}] \\
+\sstep[g] [FreshVar] {\InCtxtOfSig[g]{\freshvariableexp{x}{g}}}       {\InCtxtOfSig[g]{\subst{\phi}{x}{g}}}[\text{for fresh $\phi$}] \\
 \sstep[g] [Unify-1]  {\InCtxtOfSig[g]{\syntequalexp{t}{\tprimev}}}    {\InCtxtOf[g]{\succeedv}[\sigma^{'}]}[\text{where $\sigma^{'} = \text{unify}(t,\tprimev,\sigma)$}] \\
 \sstep[g] [Unify-2]  {\InCtxtOfSig[g]{\syntequalexp{t}{\tprimev}}}    {\InCtxtOf[g]{\failv}[\sigma_{\emptyset}]}[\text{otherwise}] \\
-\sstep[g] [And-1]    {\InCtxtOfSig[g]{\conjunctionexp{\failv}{G}}}    {\InCtxtOf[g]{\failv}[\sigma_{\emptyset}]}  \\
-\sstep[g] [And-2]    {\InCtxtOfSig[g]{\conjunctionexp{\succeedv}{G}}} {\InCtxtOfSig[g]{G}}  \\ 
+\sstep[g] [And-1]    {\InCtxtOfSig[g]{\conjunctionexp{\failv}{g}}}    {\InCtxtOf[g]{\failv}[\sigma_{\emptyset}]}  \\
+\sstep[g] [And-2]    {\InCtxtOfSig[g]{\conjunctionexp{\succeedv}{g}}} {\InCtxtOfSig[g]{g}}  \\ 
 & & & & \\
-\sstep[t] [Reroot] {\InCtxt[s]{\InCtxt[t]{ .~\succeedv_{\sigma}~.}}} {\InCtxt[s]{\disjunctionexp{ (.~\succeedv_{\sigma}~.)}{\InCtxt[t]{ . }}}} \\
-\sstep[t] [Prune Fail] {\InCtxt[s]{\InCtxt[t]{ .~\failv_{\sigma}~.}}} {\InCtxt[s]{\InCtxt[t]{ . }}} \\
-\sstep[t] [Prune~.] {\InCtxt[s]{\InCtxt[t]{\disjunctionexp{ . }{( .~\succeedv_{\sigma}~.)}}}} {\InCtxt[s]{\InCtxt[t]{.~\succeedv_{\sigma}~.}}} \\
-\sstep[t] [Step Goal] {\InCtxt[s]{\InCtxt[t]{.~\InCtxtOfSig[g]{G}~.}}} {\InCtxt[s]{\InCtxt[t]{.~\InCtxtOf[g]{G^{'}}[\sigma^{'}]~.}}}[\text{when } G_{\sigma}  \rightarrow_{g} G^{'}_{\sigma^{'}}] \\
-\sstep[t] [Reln Call] {\InCtxt[s]{\InCtxt[t]{.~\InCtxtOfSig[g]{r~t}~.}}} {\InCtxt[s]{\InCtxt[t]{d~(.~\InCtxtOfSig[g]{\subst{t}{x}{G}}~.)}}}[\text{where } \relEnv(r) = (x).G] \\ 
+\sstep[t] [Reroot] {\InCtxt[s]{\InCtxt[t]{\succeedv_{\sigma}}}} {\InCtxt[s]{\disjunctionexp{\succeedv_{\sigma}}{\InCtxt[t]{ . }}}} \\
+\sstep[t] [Prune Fail] {\InCtxt[s]{\InCtxt[t]{\failv_{\sigma}}}} {\InCtxt[s]{\InCtxt[t]{ . }}} \\
+\sstep[t] [Prune Empty] {\InCtxt[s]{\InCtxt[t]{\disjunctionexp{ . }{\succeedv_{\sigma}}}}} {\InCtxt[s]{\InCtxt[t]{\succeedv_{\sigma}}}} \\
+\sstep[t] [Step Goal] {\InCtxt[s]{\InCtxt[t]{\InCtxtOfSig[g]{g}}}} {\InCtxt[s]{\InCtxt[t]{\InCtxtOf[g]{g^{'}}[\sigma^{'}]}}}[\text{when } g_{\sigma}  \rightarrow_{g} g^{'}_{\sigma^{'}}] \\
+\sstep[t] [Reln Call] {\InCtxt[s]{\InCtxt[t]{\InCtxtOfSig[g]{r~t}}}} {\InCtxt[s]{\InCtxt[t]{d~\InCtxtOfSig[g]{\subst{t}{x}{g}}}}}[\text{where } \relEnv(r) = (x).g] \\ 
 \sstep[t] [Interleave-1] {\InCtxt[s]{\InCtxt[t]{\disjunctionexp{(d~T)}{T^{'}}}}} {\InCtxt[s]{\InCtxt[t]{d~(\disjunctionexp{T^{'}}{T})}}} \\ 
 \sstep[t] [Interleave-2] {\InCtxt[s]{d~T}} {\InCtxt[s]{T}} \\ 
 \end{tabu}
