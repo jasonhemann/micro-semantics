@@ -123,7 +123,7 @@
  \relEnv & \bnfrepl &                              & \text{Relation Environments} \\
          & \alt     & d_{1}, \ldots, d_{n}         &                              \\
          &          &                              &                              \\
- P       & \bnfrepl &                              & \text{Programs}              \\
+ p       & \bnfrepl &                              & \text{Programs}              \\
          & \alt     & \relEnv\ g                   &                              \\
          &          &                              &                              \\
  d       & \bnfrepl &                              & \text{Relations}             \\
@@ -151,7 +151,7 @@
     & \alt     & \cdot                                  & \text{Empty Node}         \\
     & \alt     & \disjunctionexp{\succeedv_{\sigma}}{v} & \text{Answer Disjunct}    \\ 
     &          &                                        &                           \\ 
-  s & \bnfrepl &                                        & \text{Trees}              \\
+  s & \bnfrepl &                                        & \text{Search Trees}       \\
     & \alt     & \cdot                                  & \text{Empty Node}         \\
     & \alt     & g_{\sigma}                             & \text{Goal Node}          \\ 
     & \alt     & \disjunctionexp{s}{s}                  & \text{Tree Disjunct Node} \\
@@ -160,6 +160,7 @@
 \bottomrule
 \end{tabu}
 \]
+
 
 %%  r       &          &                              & \text{Relation Variables}    \\
 %%         &          &                              &                              \\
@@ -235,7 +236,7 @@
 \sstep[s] [Prune Fail] {\InCtxt[V]{\InCtxt[S]{\failv_{\sigma}}}} {\InCtxt[V]{\InCtxt[S]{ \cdot }}} \\
 \sstep[s] [Prune Empty] {\InCtxt[V]{\InCtxt[S]{\disjunctionexp{ \cdot }{\succeedv_{\sigma}}}}} {\InCtxt[V]{\InCtxt[S]{\succeedv_{\sigma}}}} \\
 \sstep[s] [Step Goal] {\InCtxt[V]{\InCtxt[S]{\InCtxtOfSig[g]{g}}}} {\InCtxt[V]{\InCtxt[S]{\InCtxtOf[g]{g^{'}}[\sigma^{'}]}}}[\text{when } g_{\sigma}  \rightarrow_{g} g^{'}_{\sigma^{'}}] \\
-\sstep[s] [Reln Call] {\InCtxt[V]{\InCtxt[S]{\InCtxtOfSig[g]{r~t}}}} {\InCtxt[V]{\InCtxt[S]{d~\InCtxtOfSig[g]{\subst{t}{x}{g}}}}}[\text{where } \relEnv(r) = (x).g] \\ 
+\sstep[s] [Reln Call] {\InCtxt[V]{\InCtxt[S]{\InCtxtOfSig[g]{\relcallexp{r}{t}}}}} {\InCtxt[V]{\InCtxt[S]{d~\InCtxtOfSig[g]{\subst{t}{x}{g}}}}}[\text{where } \relEnv(r) = (x).g] \\ 
 \sstep[s] [Interleave-1] {\InCtxt[V]{\InCtxt[S]{\disjunctionexp{(d~s)}{s^{'}}}}} {\InCtxt[V]{\InCtxt[S]{d~(\disjunctionexp{s^{'}}{s})}}} \\ 
 \sstep[s] [Interleave-2] {\InCtxt[V]{d~s}} {\InCtxt[V]{s}} \\ 
 \end{tabu}
@@ -332,7 +333,7 @@ which was good.
 \freevarsf{\succeedv}                    & = & \emptyset                                            \\
 \freevarsf{\failv}                       & = & \emptyset                                            \\  
 \freevarsf{x}                            & = & \set{x}                                              \\
-\freevarsf{\relcallexp{n}{t}}            & = & \freevarsf{t}                                        \\ 
+\freevarsf{\relcallexp{r}{t}}            & = & \freevarsf{t}                                        \\ 
 \freevarsf{\consexp{t}{\tprimev}}        & = & \freevarsf{t} \cup \freevarsf{\tprimev}              \\
 \freevarsf{\syntequalexp{t}{\tprimev}}   & = & \freevarsf{t} \cup \freevarsf{\tprimev}              \\
 \freevarsf{\disjunctionexp{g}{\gprimev}} & = & \freevarsf{g} \cup \freevarsf{\gprimev}              \\
@@ -358,7 +359,7 @@ which was good.
 \boundvarsf{\succeedv}                    & = & \emptyset                                                   \\
 \boundvarsf{\failv}                       & = & \emptyset                                                   \\  
 \boundvarsf{x}                            & = & \emptyset                                                   \\
-\boundvarsf{\relcallexp{n}{t}}            & = & \boundvarsf{t}                                              \\ 
+\boundvarsf{\relcallexp{r}{t}}            & = & \boundvarsf{t}                                              \\ 
 \boundvarsf{\consexp{t}{\tprimev}}        & = & \boundvarsf{t} \cup \boundvarsf{\tprimev}                   \\
 \boundvarsf{\syntequalexp{t}{\tprimev}}   & = & \boundvarsf{t} \cup \boundvarsf{\tprimev}                   \\
 \boundvarsf{\disjunctionexp{g}{\gprimev}} & = & \boundvarsf{g} \cup \boundvarsf{\gprimev}                   \\

@@ -111,7 +111,9 @@
 \newcommand{\andexp}     [2] {\mathsf{and}\ #1\ #2}
 \newcommand{\orexp}      [2] {\mathsf{or}\ #1\ #2}
 \newcommand{\notexp}     [1] {\mathsf{not}\ #1}
-\newcommand{\consexp}    [2] {#1\, ,\, #2}
+%% \newcommand{\consexp}    [2] {#1\, ,\, #2}
+\newcommand{\consop}         {\mathsf{::}}
+\newcommand{\consexp}    [2] {#1\, \consop\, #2}
 
 %eval
 %% \newcommand{\evalin}             [2] {\llbracket\ #1\rrbracket_{#2}}
@@ -122,8 +124,8 @@
 \newcommand{\disjop} {\vee} 
 
 \newcommand{\freshvariableexp}  [2] {\exists #1 . #2}
-\newcommand{\relcallexp}        [2] {#1\ #2}
-\newcommand{\syntequalexp}      [2] {#1\ \equiv^{?}\ #2}
+\newcommand{\relcallexp}        [2] {#1\, #2}
+\newcommand{\syntequalexp}      [2] {#1\, \equiv^{?}\, #2}
 \newcommand{\conjunctionexp}     [2] {{#1}\, \conjop\, {#2}}
 \newcommand{\disjunctionexp}     [2] {{#1}\, \disjop\, {#2}}
 \newcommand{\disjexp}            [2] {\mathsf{disj}\, #1\, #2}
