@@ -306,57 +306,30 @@ mappend          & = & \mathsf{fix}\ \lambda\,m.                                
 \end{tabu}
 \]
 
-\[
-  \begin{tabu}{rcl}
-
-append    & = & \mathsf{fix} \lambda\,a  \\ 
-    & &           \lambda\,s s^{'} \\
-    & &  \primev{s} where s\ = \listnilv \\
-    & &  \listconsexp{\sigma}{(a\ {\doubleprimev{s}} \primev{s})} where s\ = \listconsexp{\sigma}{\doubleprimev{s}} \\
-    & & \delayexp{(a\ \primev{s} c)} where s\ = \delayexp{c} \\ 
-mappend & = & \fixexpa{m}{\lamdefexpa{s g}{\threematchexp{s}%
-                           {\listnilv}{\listnilv}%
-                           {\listconsexp{\sigma}{\doubleprimev{s}}}{a\ (g\sigma) (m\ {\doubleprimev{s}} \primev{s})}%
-                           {\delayexp{c}}{\delayexp{(a\ \primev{s} c)}}}}                                                                                    \\
-                 &   &                                                                                                                                                                  \\
-  bind^{S}       & = & mappend                                                                                                                                                          \\
-  unit^{S}       & = & \lamdefexp{\sigma}{\listconsexp{\sigma}{\listnilv}}                                                                                                              \\
-  fail^{S}       & = & \listnilv                                                                                                                                                        \\
-  disj^{S}       & = & append                                                                                                                                                           \\
-  delay^{S}      & = & \delayop                                                                                                                                                         \\
-                 &   &                                                                                                                                                                  \\
-  bind^{\kappa}  & = & \fixexp{b}{\lamdefexp{c f}{\lamdefexp{\delta\kappa\theta}{c(\lamdefexp{c}{\delta(b c f)})(\lamdefexp{a}{f a\delta\kappa\theta})}\theta}}                         \\
-  unit^{\kappa}  & = & \lamdefexp{a}{\lamdefexp{\delta\kappa\theta}{\kappa a\theta}}                                                                                                    \\
-  fail^{\kappa}  & = & \lamdefexp{\delta\kappa\theta}{\theta()}                                                                                                                         \\
-  disj^{\kappa}  & = & \fixexp{d}{\lamdefexp{c \primev{c}}{\lamdefexp{\delta\kappa\theta}{c(\lamdefexp{c}{\delta(d \primev{c} c)})\kappa\lamdefexp{()}{\primev{c}\delta\kappa\theta}}}} \\
-  delay^{\kappa} & = & \lamdefexp{a}{\lamdefexp{\delta\kappa\theta}{\delta a}}                                                                                                          \\ 
-\end{tabu}
-\]
-
-\[
-\begin{tabu}{rcl}
-append  & = & \fixexp{a}{\lamdefexpa{s \primev{s}}{\threematchexp{s}%
-                           {\listnilv}{\primev{s}}%
-                           {\listconsexp{\sigma}{\doubleprimev{s}}}{\listconsexp{\sigma}{(a\ {\doubleprimev{s}} \primev{s})}}%
-                           {\delayexp{c}}{\delayexp{(a\ \primev{s} c)}}}} \\
-mappend & = & \fixexp{m}{\lamdefexpa{s g}{\threematchexp{s}%
-                           {\listnilv}{\listnilv}%
-                           {\listconsexp{\sigma}{\doubleprimev{s}}}{a\ (g\sigma) (m\ {\doubleprimev{s}} \primev{s})}%
-                           {\delayexp{c}}{\delayexp{(a\ \primev{s} c)}}}}                                                                                    \\
-                 &   &                                                                                                                                                                  \\
-  bind^{S}       & = & mappend                                                                                                                                                          \\
-  unit^{S}       & = & \lamdefexp{\sigma}{\listconsexp{\sigma}{\listnilv}}                                                                                                              \\
-  fail^{S}       & = & \listnilv                                                                                                                                                        \\
-  disj^{S}       & = & append                                                                                                                                                           \\
-  delay^{S}      & = & \delayop                                                                                                                                                         \\
-                 &   &                                                                                                                                                                  \\
-  bind^{\kappa}  & = & \fixexp{b}{\lamdefexp{c f}{\lamdefexp{\delta\kappa\theta}{c(\lamdefexp{c}{\delta(b c f)})(\lamdefexp{a}{f a\delta\kappa\theta})}\theta}}                         \\
-  unit^{\kappa}  & = & \lamdefexp{a}{\lamdefexp{\delta\kappa\theta}{\kappa a\theta}}                                                                                                    \\
-  fail^{\kappa}  & = & \lamdefexp{\delta\kappa\theta}{\theta()}                                                                                                                         \\
-  disj^{\kappa}  & = & \fixexp{d}{\lamdefexp{c \primev{c}}{\lamdefexp{\delta\kappa\theta}{c(\lamdefexp{c}{\delta(d \primev{c} c)})\kappa\lamdefexp{()}{\primev{c}\delta\kappa\theta}}}} \\
-  delay^{\kappa} & = & \lamdefexp{a}{\lamdefexp{\delta\kappa\theta}{\delta a}}                                                                                                          \\ 
-\end{tabu}
-\]
+% \[
+% \begin{tabu}{rcl}
+% append  & = & \fixexp{a}{\lamdefexpa{s \primev{s}}{\threematchexp{s}%
+%                            {\listnilv}{\primev{s}}%
+%                            {\listconsexp{\sigma}{\doubleprimev{s}}}{\listconsexp{\sigma}{(a\ {\doubleprimev{s}} \primev{s})}}%
+%                            {\delayexp{c}}{\delayexp{(a\ \primev{s} c)}}}} \\
+% mappend & = & \fixexp{m}{\lamdefexpa{s g}{\threematchexp{s}%
+%                            {\listnilv}{\listnilv}%
+%                            {\listconsexp{\sigma}{\doubleprimev{s}}}{a\ (g\sigma) (m\ {\doubleprimev{s}} \primev{s})}%
+%                            {\delayexp{c}}{\delayexp{(a\ \primev{s} c)}}}}                                                                                    \\
+%                  &   &                                                                                                                                                                  \\
+%   bind^{S}       & = & mappend                                                                                                                                                          \\
+%   unit^{S}       & = & \lamdefexp{\sigma}{\listconsexp{\sigma}{\listnilv}}                                                                                                              \\
+%   fail^{S}       & = & \listnilv                                                                                                                                                        \\
+%   disj^{S}       & = & append                                                                                                                                                           \\
+%   delay^{S}      & = & \delayop                                                                                                                                                         \\
+%                  &   &                                                                                                                                                                  \\
+%   bind^{\kappa}  & = & \fixexp{b}{\lamdefexp{c f}{\lamdefexp{\delta\kappa\theta}{c(\lamdefexp{c}{\delta(b c f)})(\lamdefexp{a}{f a\delta\kappa\theta})}\theta}}                         \\
+%   unit^{\kappa}  & = & \lamdefexp{a}{\lamdefexp{\delta\kappa\theta}{\kappa a\theta}}                                                                                                    \\
+%   fail^{\kappa}  & = & \lamdefexp{\delta\kappa\theta}{\theta()}                                                                                                                         \\
+%   disj^{\kappa}  & = & \fixexp{d}{\lamdefexp{c \primev{c}}{\lamdefexp{\delta\kappa\theta}{c(\lamdefexp{c}{\delta(d \primev{c} c)})\kappa\lamdefexp{()}{\primev{c}\delta\kappa\theta}}}} \\
+%   delay^{\kappa} & = & \lamdefexp{a}{\lamdefexp{\delta\kappa\theta}{\delta a}}                                                                                                          \\ 
+% \end{tabu}
+% \]
 
 
 %% r c 
