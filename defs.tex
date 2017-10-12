@@ -77,8 +77,8 @@
 
 \newcommand{\fixop}       {\text{fix}}
 \newcommand{\fixexp}  [2] {\fixop\ \lamdefexp{#1}{#2}}
-\newcommand{\fixexpa}   [2] {\fixop\ \lamdefexpa{#1}{#2}}
-
+%%\newcommand{\fixexpa}   [2] {\fixop\ \lamdefexpa{#1}{#2}}
+\newcommand{\fixexpa}   [2] {\begin{array}{l}\fixop\ \lambda#1.\\\hspace*{.5em}#2\\\end{array}}
 %% let
 \newcommand{\letdefexp}    [3] {\letbind{#1}{#2}\ \letin{#3}}
 \newcommand{\letdefarrexp} [3] {\begin{array}{l}\letbind{#1}{#2}\\\letin{#3})\\\end{array}}
