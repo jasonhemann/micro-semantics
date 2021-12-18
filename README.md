@@ -1,29 +1,15 @@
 # README #
 
-This README would normally document whatever steps are necessary to get your application up and running.
-
-### What is this repository for? ###
-
-* Quick summary
-* Version
-* [Learn Markdown](https://bitbucket.org/tutorials/markdowndemo)
+Micro Semantics Repo
 
 ### How do I get set up? ###
 
-* Summary of set up
-* Configuration
-* Dependencies
-* Database configuration
-* How to run tests
-* Deployment instructions
+* `make` should build 
 
-### Contribution guidelines ###
+### Future targets ###
 
-* Writing tests
-* Code review
-* Other guidelines
+* `redex` model 
+  (Cf. https://groups.google.com/g/minikanren/c/aA3y-Wb50Cw, 
+       https://gist.github.com/philnguyen/ee4b6bb4a142941889d11cbf8fbf82ef)
+* directly model defunctionalized continuation search? 
 
-### Who do I talk to? ###
-
-* Repo owner or admin
-* Other community or team contact
